@@ -1554,6 +1554,7 @@ int arkStep_TakeStep_Z(void* arkode_mem, realtype *dsmPtr, int *nflagPtr)
   int retval, is, nvec;
   booleantype implicit_stage;
   booleantype deduce_stage;
+  sunbooleantype starting_stage;
   ARKodeMem ark_mem;
   ARKodeARKStepMem step_mem;
   N_Vector zcor0;
@@ -1583,8 +1584,21 @@ int arkStep_TakeStep_Z(void* arkode_mem, realtype *dsmPtr, int *nflagPtr)
       if (retval > 0) return(ARK_NLS_SETUP_RECVR);
     }
 
+  /* skip first stage if possible */
+  /* TODO(DJG): This might not work with multirate methods when the forcing
+     might need to be added to the RHS vectors */
+  if (!step_mem->Bi)
+    /* explicit method */
+    starting_stage = 1;
+  else if (SUNRabs(step_mem->Bi->A[0][0]) > TINY)
+    /* implicit first stage DIRK or ARK */
+    starting_stage = 0;
+  else
+    /* explicit first stage DIRK or ARK */
+    starting_stage = 1;
+
   /* loop over internal stages to the step */
-  for (is=0; is<step_mem->stages; is++) {
+  for (is=starting_stage; is<step_mem->stages; is++) {
 
     /* store current stage index */
     step_mem->istage = is;
