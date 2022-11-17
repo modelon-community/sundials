@@ -587,9 +587,52 @@ illustration only.
 
 .. cmakeoption:: BUILD_FORTRAN_MODULE_INTERFACE
 
-   Enable Fortran2003 interface
+   Enable Fortran 2003 interface
 
    Default: ``OFF``
+
+.. cmakeoption:: ENABLE_GINKGO
+
+   Enable interfaces to the Ginkgo linear algebra library.
+
+   Default: ``OFF``
+
+.. cmakeoption:: Ginkgo_DIR
+
+   Path to the Ginkgo installation.
+
+   Default: None
+
+.. cmakeoption:: SUNDIALS_GINKGO_BACKENDS
+
+   Semi-colon separated list of Ginkgo target architecutres/executors to build for.
+   Options currenty supported are REF (the Ginkgo reference executor), OMP, CUDA, HIP, and DPC++.
+
+   Default: "REF;OMP"
+
+.. cmakeoption:: ENABLE_KOKKOS
+
+   Enable the Kokkos based vector.
+
+   Default: ``OFF``
+
+.. cmakeoption:: Kokkos_DIR
+
+   Path to the Kokkos installation.
+
+   Default: None
+
+.. cmakeoption:: ENABLE_KOKKOS_KERNELS
+
+   Enable the Kokkos based dense matrix and linear solver.
+
+   Default: ``OFF``
+
+.. cmakeoption:: KokkosKernels_DIR
+
+   Path to the Kokkos-Kernels installation.
+
+   Default: None
 
 .. cmakeoption:: ENABLE_HYPRE
 
@@ -1142,6 +1185,60 @@ addressing specific configurations when using the supported third
 party libraries.
 
 
+.. _Installation.CMake.ExternalLibraries.Ginkgo:
+
+Building with Ginkgo
+^^^^^^^^^^^^^^^^^^^^
+
+`Ginkgo <https://ginkgo-project.github.io/>`_ is a high-performance linear algebra library for
+manycore systems, with a focus on solving sparse linear systems. It is implemented using modern
+C++ (you will need at least a C++14 compliant compiler to build it), with GPU kernels implemented in
+CUDA (for NVIDIA devices), HIP (for AMD devices) and SYCL/DPC++ (for Intel devices and other
+supported hardware). To enable Ginkgo in SUNDIALS, set the :cmakeop:`ENABLE_GINKGO` to ``ON``
+and provide the path to the root of the Ginkgo installation in :cmakeop:`Ginkgo_DIR`.
+Additionally, :cmakeop:`SUNDIALS_GINKGO_BACKENDS` must be set to a list of Ginkgo target
+architecutres/executors. E.g.,
+
+.. code-block:: bash
+
+   % cmake \
+   > -DENABLE_GINKGO=ON \
+   > -DGinkgo_DIR=/path/to/ginkgo/installation \
+   > -DSUNDIALS_GINKGO_BACKENDS="REF;OMP;CUDA" \
+   > /home/myname/sundials/srcdir
+
+The SUNDIALS interfaces to Ginkgo are not compatible with :cmakeop:`SUNDIALS_PRECISION` set
+to ``extended``.
+
+.. _Installation.CMake.ExternalLibraries.Kokkos:
+
+Building with Kokkos
+^^^^^^^^^^^^^^^^^^^^
+
+`Kokkos <https://kokkos.github.io/kokkos-core-wiki/>`_ is a modern C++ (requires
+at least C++14) programming model for witting performance portable code for
+multicore CPU and GPU-based systems including NVIDIA, AMD, and Intel
+accelerators. To enable Kokkos in SUNDIALS, set the :cmakeop:`ENABLE_KOKKOS` to
+``ON`` and provide the path to the root of the Kokkos installation in
+:cmakeop:`Kokkos_DIR`. Additionally, the
+`Kokkos-Kernels <https://github.com/kokkos/kokkos-kernels>`_ library provides
+common computational kernels for linear algebra. To enable Kokkos-Kernels in
+SUNDIALS, set the :cmakeop:`ENABLE_KOKKOS_KERNELS` to ``ON`` and provide the
+path to the root of the Kokkos-Kernels installation in
+:cmakeop:`KokkosKernels_DIR` e.g.,
+
+.. code-block:: bash
+
+   % cmake \
+   > -DENABLE_KOKKOS=ON \
+   > -DKokkos_DIR=/path/to/kokkos/installation \
+   > -DENABLE_KOKKOS_KERNELS=ON \
+   > -DKokkosKernels_DIR=/path/to/kokkoskernels/installation \
+   > /home/myname/sundials/srcdir
+
+.. note::
+
+   The minimum supported version of Kokkos-Kernels 3.7.00.
 
 .. _Installation.CMake.ExternalLibraries.LAPACK:
 
@@ -1216,7 +1313,7 @@ To enable SuperLU_DIST, set :cmakeop:`ENABLE_SUPERLUDIST` to ``ON``, set
 If SuperLU_DIST was built with OpenMP then the option :cmakeop:`SUPERLUDIST_OpenMP`
 and :cmakeop:`ENABLE_OPENMP` should be set to ``ON``.
 
-SUNDIALS supports SuperLU_DIST v7.0.0 -- v8.x.x and has been tested with 
+SUNDIALS supports SuperLU_DIST v7.0.0 -- v8.x.x and has been tested with
 v7.2.0 and v8.1.0.
 
 
@@ -1266,7 +1363,9 @@ path of the PETSc installation. Alternatively, a user can provide a list of
 include paths in ``PETSC_INCLUDES`` and a list of complete paths to the PETSc
 libraries in ``PETSC_LIBRARIES``.
 
-SUNDIALS has been tested with PETSc version 3.16.1.
+SUNDIALS is regularly tested with the latest PETSc versions, specifically
+up to version 3.18.1 as of SUNDIALS version |version|. SUNDIALS
+requires PETSc 3.5.0 or newer.
 
 
 .. _Installation.CMake.ExternalLibraries.hypre:
@@ -1289,7 +1388,8 @@ to the ``include`` path of the *hypre* installation, and set the variable
    SUNDIALS must be configured so that ``SUNDIALS_INDEX_SIZE`` is compatible
    with ``HYPRE_BigInt`` in the *hypre* installation.
 
-SUNDIALS has been tested with *hypre* version 2.23.0
+SUNDIALS is regularly tested with the latest versions of *hypre*, specifically
+up to version 2.26.0 as of SUNDIALS version |version|.
 
 
 .. _Installation.CMake.ExternalLibraries.Magma:
@@ -1673,6 +1773,8 @@ configuration file to build against SUNDIALS in their own CMake project.
    |                              +--------------+----------------------------------------------+
    |                              | Headers      | ``sunmatrix/sunmatrix_dense.h``              |
    +------------------------------+--------------+----------------------------------------------+
+   | Ginkgo                       | Headers      | ``sunmatrix/sunmatrix_ginkgo.hpp``           |
+   +------------------------------+--------------+----------------------------------------------+
    | MAGMADENSE                   | Libraries    | ``libsundials_sunmatrixmagmadense.LIB``      |
    |                              +--------------+----------------------------------------------+
    |                              | Headers      | ``sunmatrix/sunmatrix_magmadense.h``         |
@@ -1704,6 +1806,8 @@ configuration file to build against SUNDIALS in their own CMake project.
    | DENSE                        | Libraries    | ``libsundials_sunlinsoldense.LIB``           |
    |                              +--------------+----------------------------------------------+
    |                              | Headers      | ``sunlinsol/sunlinsol_dense.h``              |
+   +------------------------------+--------------+----------------------------------------------+
+   | Ginkgo                       | Headers      | ``sunlinsol/sunlinsol_ginkgo.hpp``           |
    +------------------------------+--------------+----------------------------------------------+
    | KLU                          | Libraries    | ``libsundials_sunlinsolklu.LIB``             |
    |                              +--------------+----------------------------------------------+
