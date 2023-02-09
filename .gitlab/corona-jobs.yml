@@ -14,13 +14,25 @@
 # HIP
 # ------------------------------------------------------------------------------
 
-# Builds with Hip
+# Builds with HIP support (and MPI by default)
 corona_clang_hip:
   parallel:
     matrix:
       - COMPILER_SPEC: clang@13.0.0
         AMDGPU_TARGET: [gfx906]
   variables:
-    SPEC: "%${COMPILER_SPEC} cstd=99 cxxstd=14 amdgpu_target=${AMDGPU_TARGET} +rocm~mpi"
+    SPEC: "%${COMPILER_SPEC} cstd=99 cxxstd=14 amdgpu_target=${AMDGPU_TARGET} +rocm"
   extends: .corona_build_and_test
 
+# ------------------------------------------------------------------------------
+# HIP + TPLs
+# ------------------------------------------------------------------------------
+
+corona_clang_hip_tpls:
+  parallel:
+    matrix:
+      - COMPILER_SPEC: clang@13.0.0
+        AMDGPU_TARGET: [gfx906]
+  variables:
+    SPEC: "%${COMPILER_SPEC} cstd=99 cxxstd=14 amdgpu_target=${AMDGPU_TARGET} +rocm+openmp+mpi"
+  extends: .corona_build_and_test
