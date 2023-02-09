@@ -630,9 +630,7 @@ class Sundials(CachedCMakePackage, CudaPackage, ROCmPackage):
         spec = self.spec
         entries = []
 
-        if "~mpi" in spec:
-            return entries
-        else:
+        if "+mpi" in spec:
             entries.extend(
                 [
                     self.cache_option_from_variant("MPI_ENABLE", "mpi"),
@@ -642,6 +640,7 @@ class Sundials(CachedCMakePackage, CudaPackage, ROCmPackage):
                     cmake_cache_path("MPI_MPIF90", spec["mpi"].mpifc)
                 ]
             )
+        
         return entries
 
     def initconfig_hardware_entries(self):
