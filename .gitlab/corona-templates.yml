@@ -11,10 +11,10 @@
 # ------------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------------
-# Tags and rules to run tests on Lassen
+# Tags and rules to run tests on Corona
 # ------------------------------------------------------------------------------
 
-# Generic corona build job, extending build script for IBM P9 systems
+# Generic corona build job
 .corona_build_and_test:
   tags:
     - shell

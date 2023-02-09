@@ -34,5 +34,5 @@ corona_clang_hip_tpls:
       - COMPILER_SPEC: clang@13.0.0
         AMDGPU_TARGET: [gfx906]
   variables:
-    SPEC: "%${COMPILER_SPEC} cstd=99 cxxstd=14 amdgpu_target=${AMDGPU_TARGET} +rocm+openmp+mpi+raja ^raja+rocm~examples~exercises amdgpu_target=${AMDGPU_TARGET}"
+    SPEC: "%${COMPILER_SPEC} cstd=99 cxxstd=14 amdgpu_target=${AMDGPU_TARGET} +rocm+openmp+mpi+raja ^raja+rocm~examples~exercises amdgpu_target=${AMDGPU_TARGET} ^blt@0.3.5"
   extends: .corona_build_and_test
