@@ -11,8 +11,8 @@ set -o errexit
 option=${1:-""}
 hostname="$(hostname)"
 project_dir="$(pwd)"
-
 build_root=${BUILD_ROOT:-""}
+
 hostconfig=${HOST_CONFIG:-""}
 spec=${SPEC:-""}
 job_unique_id=${CI_JOB_ID:-""}
@@ -57,8 +57,10 @@ fi
 
 # Rocm version specific to Corona.
 if [[ -n "${AMDGPU_TARGET}" ]]; then
-    echo "module load rocm/5.1.1"
-    module load rocm/5.1.1
+    module load rocm/5.2.3
+
+    # Raja requires newer cmake
+    module load cmake/3.23
 fi
 
 if [[ "${option}" != "--build-only" && "${option}" != "--test-only" ]]
@@ -124,7 +126,8 @@ then
         module load cuda/"${cuda_version}"
     fi
 
-    module load cmake/3.23
+    # echo "module load cmake/3.23"
+    # module load cmake/3.23
 fi
 date
 
