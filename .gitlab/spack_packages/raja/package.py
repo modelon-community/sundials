@@ -3,6 +3,7 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
+import glob
 import socket
 
 from spack import *
@@ -19,7 +20,12 @@ class Raja(CachedCMakePackage, CudaPackage, ROCmPackage):
 
     version('develop', branch='develop', submodules=False)
     version('main',  branch='main',  submodules=False)
-    version('2022.03.1', tag='v2022.03.0', submodules=False)
+    version('2022.10.4', tag='v2022.10.4', submodules=False)
+    version('2022.10.3', tag='v2022.10.3', submodules=False)
+    version('2022.10.2', tag='v2022.10.2', submodules=False)
+    version('2022.10.1', tag='v2022.10.1', submodules=False)
+    version('2022.10.0', tag='v2022.10.0', submodules=False)
+    version('2022.03.1', tag='v2022.03.1', submodules=False)
     version('2022.03.0', tag='v2022.03.0', submodules=False)
     version('0.14.0', tag='v0.14.0', submodules='True')
     version('0.13.0', tag='v0.13.0', submodules='True')
@@ -62,7 +68,7 @@ class Raja(CachedCMakePackage, CudaPackage, ROCmPackage):
     depends_on('camp@0.1.0', when='@0.10.0:0.13.0')
     depends_on('camp@2022.03.0:', when='@2022.03.0:')
 
-    depends_on('cmake@:3.20', when='+rocm', type='build')
+    depends_on('cmake@:3.23', when='+rocm', type='build')
     depends_on('cmake@3.14:', when='@2022.03.0:')
 
     with when('+rocm @0.12.0:'):
@@ -118,6 +124,13 @@ class Raja(CachedCMakePackage, CudaPackage, ROCmPackage):
             entries.append(cmake_cache_option("ENABLE_HIP", True))
             entries.append(cmake_cache_path(
                 "HIP_ROOT_DIR", '{0}'.format(spec['hip'].prefix)))
+            # there is only one dir like this, but the version component is unknown
+            entries.append(
+                cmake_cache_path(
+                    "HIP_CLANG_INCLUDE_PATH",
+                    glob.glob("{}/lib/clang/*/include".format(spec["llvm-amdgpu"].prefix))[0],
+                )
+            )
             archs = self.spec.variants['amdgpu_target'].value
             if archs != 'none':
                 arch_str = ",".join(archs)
