@@ -35,5 +35,5 @@ corona_clang_hip_tpls:
         ROCM_VERSION: [5.2.3]
         AMDGPU_TARGET: [gfx906]
   variables:
-    SPEC: "%${COMPILER_SPEC} cstd=99 cxxstd=14 precision=double ~int64 amdgpu_target=${AMDGPU_TARGET} +rocm+openmp+mpi+raja+magma ^raja+rocm~examples~exercises~openmp amdgpu_target=${AMDGPU_TARGET} ^magma+rocm amdgpu_target=${AMDGPU_TARGET} ^hip@${ROCM_VERSION} ^hsa-rocr-dev@${ROCM_VERSION} ^llvm-amdgpu@${ROCM_VERSION}"
+    SPEC: "%${COMPILER_SPEC} cstd=99 cxxstd=14 precision=double ~int64 amdgpu_target=${AMDGPU_TARGET} +rocm+openmp+mpi+raja+magma ^raja+rocm~examples~exercises~openmp amdgpu_target=${AMDGPU_TARGET} ^magma+rocm amdgpu_target=${AMDGPU_TARGET} ^hip@${ROCM_VERSION} ^hsa-rocr-dev@${ROCM_VERSION} ^llvm-amdgpu@${ROCM_VERSION} ^hipsparse@${ROCM_VERSION}"
   extends: .corona_build_and_test
