@@ -43,7 +43,7 @@ echo "shared_spack  = ${shared_spack}"
 hostname=${hostname%%[0-9]*}
 
 # number of parallel build jobs
-BUILD_JOBS=${BUILD_JOBS:-"1"}
+BUILD_JOBS=${BUILD_JOBS:-"4"}
 
 # load newer python to try the clingo concretizer
 # Corona does not have python 3.8.2
@@ -58,10 +58,9 @@ fi
 # Rocm version specific to Corona.
 if [[ -n "${AMDGPU_TARGET}" ]]; then
     module load rocm/5.2.3
-
-    # Raja requires newer cmake
-    module load cmake/3.23
 fi
+
+module load cmake/3.23
 
 if [[ "${option}" != "--build-only" && "${option}" != "--test-only" ]]
 then
@@ -125,9 +124,6 @@ then
         echo "module load cuda/${cuda_version}"
         module load cuda/"${cuda_version}"
     fi
-
-    # echo "module load cmake/3.23"
-    # module load cmake/3.23
 fi
 date
 
