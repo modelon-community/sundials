@@ -123,6 +123,14 @@ class Sundials(CachedCMakePackage, CudaPackage, ROCmPackage):
         when="@6.0.0: +profiling",
         description="Enable Caliper instrumentation/profiling",
     )
+    variant("ginkgo", default=False, when="@6.4.0:", description="Enable Ginkgo interfaces")
+    # variant("kokkos", default=False, when="@6.4.0:", description="Enable Kokkos vector")
+    # variant(
+    #     "kokkos-kernels",
+    #     default=False,
+    #     when="@6.4.0:",
+    #     description="Enable KokkosKernels based matrix and linear solver",
+    # )
     variant("hypre", default=False, when="@2.7.0:", description="Enable Hypre MPI parallel vector")
     variant("lapack", default=False, description="Enable LAPACK direct solvers")
     variant("klu", default=False, description="Enable KLU sparse, direct solver")
@@ -190,6 +198,14 @@ class Sundials(CachedCMakePackage, CudaPackage, ROCmPackage):
 
     # External libraries
     depends_on("caliper", when="+caliper")
+    depends_on("ginkgo@1.5.0:", when="+ginkgo")
+    # depends_on("kokkos", when="+kokkos")
+    # depends_on("kokkos-kernels", when="+kokkos-kernels")
+    # for rocm_arch in ROCmPackage.amdgpu_targets:
+    #     depends_on(
+    #         "kokkos+rocm amdgpu_target=%s" % rocm_arch,
+    #         when="+kokkos +rocm amdgpu_target=%s" % rocm_arch,
+    #     )
     depends_on("lapack", when="+lapack")
     depends_on("hypre+mpi@2.22.1:", when="@5.7.1: +hypre")
     depends_on("hypre+mpi@:2.22.0", when="@:5.7.0 +hypre")
@@ -733,6 +749,25 @@ class Sundials(CachedCMakePackage, CudaPackage, ROCmPackage):
         # Building with Caliper
         if "+caliper" in spec:
             entries.append(cmake_cache_path("CALIPER_DIR", spec["caliper"].prefix))
+
+        # Building with Ginkgo
+        if "+ginkgo" in spec:
+            gko_backends = ["REF"]
+            if "+openmp" in spec["ginkgo"] and "+openmp" in spec:
+                gko_backends.append("OMP")
+            if "+cuda" in spec["ginkgo"] and "+cuda" in spec:
+                gko_backends.append("CUDA")
+            if "+rocm" in spec["ginkgo"] and "+rocm" in spec:
+                gko_backends.append("HIP")
+            if "+oneapi" in spec["ginkgo"] and "+sycl" in spec:
+                gko_backends.append("DPCPP")
+            entries.extend(
+                [
+                    cmake_cache_option("ENABLE_GINKGO", True),
+                    cmake_cache_path("Ginkgo_DIR", spec["ginkgo"].prefix),
+                    cmake_cache_string("SUNDIALS_GINKGO_BACKENDS", ";".join(gko_backends)),
+                ]
+            )
 
         # Building with Hypre
         if "+hypre" in spec:
