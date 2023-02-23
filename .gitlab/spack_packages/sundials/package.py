@@ -124,13 +124,13 @@ class Sundials(CachedCMakePackage, CudaPackage, ROCmPackage):
         description="Enable Caliper instrumentation/profiling",
     )
     variant("ginkgo", default=False, when="@6.4.0:", description="Enable Ginkgo interfaces")
-    # variant("kokkos", default=False, when="@6.4.0:", description="Enable Kokkos vector")
-    # variant(
-    #     "kokkos-kernels",
-    #     default=False,
-    #     when="@6.4.0:",
-    #     description="Enable KokkosKernels based matrix and linear solver",
-    # )
+    variant("kokkos", default=False, when="@6.4.0:", description="Enable Kokkos vector")
+    variant(
+        "kokkos-kernels",
+        default=False,
+        when="@6.4.0:",
+        description="Enable KokkosKernels based matrix and linear solver",
+    )
     variant("hypre", default=False, when="@2.7.0:", description="Enable Hypre MPI parallel vector")
     variant("lapack", default=False, description="Enable LAPACK direct solvers")
     variant("klu", default=False, description="Enable KLU sparse, direct solver")
@@ -199,13 +199,22 @@ class Sundials(CachedCMakePackage, CudaPackage, ROCmPackage):
     # External libraries
     depends_on("caliper", when="+caliper")
     depends_on("ginkgo@1.5.0:", when="+ginkgo")
-    # depends_on("kokkos", when="+kokkos")
-    # depends_on("kokkos-kernels", when="+kokkos-kernels")
-    # for rocm_arch in ROCmPackage.amdgpu_targets:
-    #     depends_on(
-    #         "kokkos+rocm amdgpu_target=%s" % rocm_arch,
-    #         when="+kokkos +rocm amdgpu_target=%s" % rocm_arch,
-    #     )
+    depends_on("kokkos", when="+kokkos")
+    depends_on("kokkos-kernels", when="+kokkos-kernels")
+    for cuda_arch in CudaPackage.cuda_arch_values:
+        depends_on(
+            "kokkos+cuda+cuda_lambda+cuda_constexpr cuda_arch=%s" % cuda_arch,
+            when="+kokkos +cuda cuda_arch=%s" % cuda_arch,
+        )
+        depends_on(
+            "kokkos-kernels+cuda cuda_arch=%s" % cuda_arch,
+            when="+kokkos-kernels +cuda cuda_arch=%s" % cuda_arch,
+        )
+    for rocm_arch in ROCmPackage.amdgpu_targets:
+        depends_on(
+            "kokkos+rocm amdgpu_target=%s" % rocm_arch,
+            when="+kokkos +rocm amdgpu_target=%s" % rocm_arch,
+        )
     depends_on("lapack", when="+lapack")
     depends_on("hypre+mpi@2.22.1:", when="@5.7.1: +hypre")
     depends_on("hypre+mpi@:2.22.0", when="@:5.7.0 +hypre")
@@ -742,7 +751,9 @@ class Sundials(CachedCMakePackage, CudaPackage, ROCmPackage):
                 self.cache_option_from_variant("RAJA_ENABLE", "raja"),
                 self.cache_option_from_variant("SUPERLUDIST_ENABLE", "superlu-dist"),
                 self.cache_option_from_variant("SUPERLUMT_ENABLE", "superlu-mt"),
-                self.cache_option_from_variant("Trilinos_ENABLE", "trilinos")
+                self.cache_option_from_variant("Trilinos_ENABLE", "trilinos"),
+                self.cache_option_from_variant("ENABLE_KOKKOS", "kokkos"),
+                self.cache_option_from_variant("ENABLE_KOKKOS_KERNELS", "kokkos-kernels")
             ]
         )
 
@@ -781,6 +792,12 @@ class Sundials(CachedCMakePackage, CudaPackage, ROCmPackage):
                 hypre_libs = spec["blas"].libs + spec["lapack"].libs
                 entries.extend([cmake_cache_string("HYPRE_LIBRARIES", hypre_libs.joined(";"))])
 
+        # Building with Kokkos and KokkosKernels
+        if "+kokkos" in spec:
+            entries.extend([cmake_cache_path("Kokkos_DIR", spec["kokkos"].prefix)])
+        if "+kokkos-kernels" in spec:
+            entries.extend([cmake_cache_path("KokkosKernels_DIR", spec["kokkos-kernels"].prefix)])
+
         # Building with KLU
         if "+klu" in spec:
             entries.extend(
@@ -809,6 +826,11 @@ class Sundials(CachedCMakePackage, CudaPackage, ROCmPackage):
         if "+petsc" in spec:
             if spec.version >= Version("5"):
                 entries.append(cmake_cache_path("PETSC_DIR", spec["petsc"].prefix))
+                if "+kokkos" in spec["petsc"]:
+                    entries.extend([
+                        cmake_cache_path("Kokkos_DIR", spec["kokkos"].prefix),
+                        cmake_cache_path("KokkosKernels_DIR", spec["kokkos-kernels"].prefix)
+                    ])
             else:
                 entries.extend(
                     [
