@@ -1,24 +1,5 @@
 #!/usr/bin/bash
 
-# Debug spec and variables
-COMPILER_SPEC=clang@14.0.0
-AMDGPU_TARGET=gfx906
-ROCM_VERSION=5.2.3
-
-# SPEC="%${COMPILER_SPEC} cstd=99 cxxstd=14 precision=double amdgpu_target=${AMDGPU_TARGET} +rocm+openmp+mpi"
-
-# SPEC="%${COMPILER_SPEC} cstd=99 cxxstd=14 precision=double ~int64 amdgpu_target=${AMDGPU_TARGET} +rocm+openmp+mpi+raja ^raja+rocm~examples~exercises~openmp amdgpu_target=${AMDGPU_TARGET} ^hip@${ROCM_VERSION} ^hsa-rocr-dev@${ROCM_VERSION} ^llvm-amdgpu@${ROCM_VERSION}"
-
-SPEC="%${COMPILER_SPEC} cstd=99 cxxstd=14 precision=double amdgpu_target=${AMDGPU_TARGET} +rocm+openmp+mpi+ginkgo~petsc~profiling ^ginkgo+rocm~openmp amdgpu_target=${AMDGPU_TARGET} ^hip@${ROCM_VERSION} ^hsa-rocr-dev@${ROCM_VERSION} ^llvm-amdgpu@${ROCM_VERSION} ^hipsparse@${ROCM_VERSION} ^hipblas@${ROCM_VERSION} ^rocrand@${ROCM_VERSION} ^rocthrust@${ROCM_VERSION}"
-
-# SPEC="%${COMPILER_SPEC} cstd=99 cxxstd=14 precision=double ~int64 amdgpu_target=${AMDGPU_TARGET} +rocm+openmp+mpi+raja+magma~petsc~profiling ^magma+rocm amdgpu_target=${AMDGPU_TARGET} ^raja+rocm~examples~exercises~openmp amdgpu_target=${AMDGPU_TARGET} ^hip@${ROCM_VERSION} ^hsa-rocr-dev@${ROCM_VERSION} ^llvm-amdgpu@${ROCM_VERSION} ^hipsparse@${ROCM_VERSION}"
-
-# COMPILER_SPEC=gcc@8.3.1
-# CUDA_SPEC=cuda@11.5.0
-
-# SPEC="%${COMPILER_SPEC} cstd=99 cxxstd=14 precision=double ~int64 +mpi+openmp+cuda+raja+magma+superlu-dist+ginkgo+kokkos+kokkos-kernels cuda_arch=70 ^kokkos-kernels+cuda cuda_arch=70 ^kokkos+cuda+wrapper cuda_arch=70 ^ginkgo+cuda cuda_arch=70 ^superlu-dist+cuda cuda_arch=70 ^magma+cuda cuda_arch=70 ^raja+cuda~openmp~examples~exercises cuda_arch=70 ^${CUDA_SPEC}"
-
-
 # make sure lmod is loaded
 if test -e /usr/share/lmod/lmod/init/bash
 then
@@ -30,8 +11,8 @@ set -o errexit
 option=${1:-""}
 hostname="$(hostname)"
 project_dir="$(pwd)"
-build_root=${BUILD_ROOT:-""}
 
+build_root=${BUILD_ROOT:-""}
 hostconfig=${HOST_CONFIG:-""}
 spec=${SPEC:-""}
 job_unique_id=${CI_JOB_ID:-""}
@@ -39,7 +20,7 @@ job_unique_id=${CI_JOB_ID:-""}
 sys_type=${SYS_TYPE:-""}
 py_env_path=${PYTHON_ENVIRONMENT_PATH:-""}
 
-shared_spack=${SHARED_SPACK:-"ON"}
+shared_spack=${SHARED_SPACK:-"UPSTREAM"}
 
 # Dependencies
 date
@@ -62,7 +43,7 @@ echo "shared_spack  = ${shared_spack}"
 hostname=${hostname%%[0-9]*}
 
 # number of parallel build jobs
-BUILD_JOBS=${BUILD_JOBS:-"12"}
+BUILD_JOBS=${BUILD_JOBS:-"4"}
 
 # load newer python to try the clingo concretizer
 # Corona does not have python 3.8.2
@@ -76,10 +57,11 @@ fi
 
 # Rocm version specific to Corona.
 if [[ -n "${AMDGPU_TARGET}" ]]; then
-    module load rocm/5.1.1
-fi
+    module load rocm/5.2.3
 
-module load cmake/3.23
+    # Raja requires newer cmake
+    module load cmake/3.23
+fi
 
 if [[ "${option}" != "--build-only" && "${option}" != "--test-only" ]]
 then
@@ -95,12 +77,9 @@ then
 
     prefix_opt=""
 
-    if [[ -d /usr/workspace/pan13 ]]
+    if [[ -d /dev/shm ]]
     then
-        # where spack installs stuff
-        # prefix="/usr/workspace/pan13/spack_installs/${hostname}"
-        prefix="/usr/workspace/pan13/ci-installs/${hostname}"
-        # prefix="/dev/shm/${hostname}"
+        prefix="/dev/shm/${hostname}"
         if [[ -z ${job_unique_id} ]]; then
           job_unique_id=manual_job_$(date +%s)
           while [[ -d ${prefix}/${job_unique_id} ]] ; do
@@ -108,6 +87,7 @@ then
               job_unique_id=manual_job_$(date +%s)
           done
         fi
+
         prefix="${prefix}/${job_unique_id}"
         mkdir -p ${prefix}
         prefix_opt="--prefix=${prefix}"
@@ -121,19 +101,17 @@ then
         mkdir -p ${spack_user_cache}
     fi
 
-    if [[ -d /usr/workspace/pan13 ]]
+    if [[ -d /usr/workspace/sundials ]]
     then
-        # where spack pulls installations from
-        upstream="/usr/workspace/pan13/spack_installs/${hostname}"
-        # upstream="/usr/workspace/sundials/spack_installs/${hostname}"
+        upstream="/usr/workspace/sundials/spack_installs/${hostname}"
         mkdir -p "${upstream}"
         upstream_opt="--upstream=${upstream}"
     fi
 
-    if [[ "${shared_spack}" == "UPSTREAM" ]] # uses the upstream to save on build time
+    if [[ "${shared_spack}" == "UPSTREAM" ]]
     then
-        python3 .gitlab/uberenv/uberenv.py --spec="${spec}" "${prefix_opt}" "${upstream_opt}" --reuse=True
-    elif [[ "${shared_spack}" == "ON" ]] # seems to install in the upstream
+        python3 .gitlab/uberenv/uberenv.py --spec="${spec}" "${prefix_opt}" "${upstream_opt}"
+    elif [[ "${shared_spack}" == "ON" ]]
     then
         python3 .gitlab/uberenv/uberenv.py --spec="${spec}" --prefix="${upstream}"
     else
@@ -147,6 +125,9 @@ then
         echo "module load cuda/${cuda_version}"
         module load cuda/"${cuda_version}"
     fi
+
+    # echo "module load cmake/3.23"
+    # module load cmake/3.23
 fi
 date
 
