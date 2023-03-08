@@ -1,22 +1,19 @@
 #!/usr/bin/bash
 
 # Debug spec and variables
+# COMPILER_SPEC=rocmcc@5.2.3
 COMPILER_SPEC=clang@14.0.0
 AMDGPU_TARGET=gfx906
 ROCM_VERSION=5.2.3
 
-# SPEC="%${COMPILER_SPEC} cstd=99 cxxstd=14 precision=double amdgpu_target=${AMDGPU_TARGET} +rocm+openmp+mpi"
+SPEC="%${COMPILER_SPEC} cstd=99 cxxstd=14 precision=double amdgpu_target=${AMDGPU_TARGET} ~mpi+rocm+openmp+ginkgo ^ginkgo@git.234594c92b58e2384dfb43c2d08e7f43e2b58e7a+rocm+openmp amdgpu_target=${AMDGPU_TARGET} ^hip@${ROCM_VERSION} ^hsa-rocr-dev@${ROCM_VERSION} ^llvm-amdgpu@${ROCM_VERSION} ^hipsparse@${ROCM_VERSION} ^hipblas@${ROCM_VERSION}"
 
-# SPEC="%${COMPILER_SPEC} cstd=99 cxxstd=14 precision=double ~int64 amdgpu_target=${AMDGPU_TARGET} +rocm+openmp+mpi+raja ^raja+rocm~examples~exercises~openmp amdgpu_target=${AMDGPU_TARGET} ^hip@${ROCM_VERSION} ^hsa-rocr-dev@${ROCM_VERSION} ^llvm-amdgpu@${ROCM_VERSION}"
 
-SPEC="%${COMPILER_SPEC} cstd=99 cxxstd=14 precision=double amdgpu_target=${AMDGPU_TARGET} +rocm+openmp+mpi+ginkgo~petsc~profiling ^ginkgo+rocm~openmp amdgpu_target=${AMDGPU_TARGET} ^hip@${ROCM_VERSION} ^hsa-rocr-dev@${ROCM_VERSION} ^llvm-amdgpu@${ROCM_VERSION} ^hipsparse@${ROCM_VERSION} ^hipblas@${ROCM_VERSION} ^rocrand@${ROCM_VERSION} ^rocthrust@${ROCM_VERSION}"
-
-# SPEC="%${COMPILER_SPEC} cstd=99 cxxstd=14 precision=double ~int64 amdgpu_target=${AMDGPU_TARGET} +rocm+openmp+mpi+raja+magma~petsc~profiling ^magma+rocm amdgpu_target=${AMDGPU_TARGET} ^raja+rocm~examples~exercises~openmp amdgpu_target=${AMDGPU_TARGET} ^hip@${ROCM_VERSION} ^hsa-rocr-dev@${ROCM_VERSION} ^llvm-amdgpu@${ROCM_VERSION} ^hipsparse@${ROCM_VERSION}"
-
+# CUDA Debug
 # COMPILER_SPEC=gcc@8.3.1
 # CUDA_SPEC=cuda@11.5.0
 
-# SPEC="%${COMPILER_SPEC} cstd=99 cxxstd=14 precision=double ~int64 +mpi+openmp+cuda+raja+magma+superlu-dist+ginkgo+kokkos+kokkos-kernels cuda_arch=70 ^kokkos-kernels+cuda cuda_arch=70 ^kokkos+cuda+wrapper cuda_arch=70 ^ginkgo+cuda cuda_arch=70 ^superlu-dist+cuda cuda_arch=70 ^magma+cuda cuda_arch=70 ^raja+cuda~openmp~examples~exercises cuda_arch=70 ^${CUDA_SPEC}"
+# SPEC="%${COMPILER_SPEC} cstd=99 cxxstd=14 precision=double +mpi+openmp+cuda~raja+superlu-dist+ginkgo+kokkos+kokkos-kernels cuda_arch=70 ^kokkos-kernels+cuda+serial cuda_arch=70 ^kokkos+cuda+wrapper~profiling cuda_arch=70 ^ginkgo+cuda cuda_arch=70 ^superlu-dist+cuda cuda_arch=70 ^${CUDA_SPEC}"
 
 
 # make sure lmod is loaded
@@ -39,7 +36,7 @@ job_unique_id=${CI_JOB_ID:-""}
 sys_type=${SYS_TYPE:-""}
 py_env_path=${PYTHON_ENVIRONMENT_PATH:-""}
 
-shared_spack=${SHARED_SPACK:-"ON"}
+shared_spack=${SHARED_SPACK:-"UPSTREAM"}
 
 # Dependencies
 date
@@ -62,7 +59,7 @@ echo "shared_spack  = ${shared_spack}"
 hostname=${hostname%%[0-9]*}
 
 # number of parallel build jobs
-BUILD_JOBS=${BUILD_JOBS:-"12"}
+BUILD_JOBS=${BUILD_JOBS:-"1"}
 
 # load newer python to try the clingo concretizer
 # Corona does not have python 3.8.2
@@ -76,7 +73,7 @@ fi
 
 # Rocm version specific to Corona.
 if [[ -n "${AMDGPU_TARGET}" ]]; then
-    module load rocm/5.1.1
+    module load rocm/5.2.3
 fi
 
 module load cmake/3.23
