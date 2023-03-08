@@ -36,6 +36,7 @@ job_unique_id=${CI_JOB_ID:-""}
 sys_type=${SYS_TYPE:-""}
 py_env_path=${PYTHON_ENVIRONMENT_PATH:-""}
 
+spack_prefix=${SHARED_SPACK_PREFIX:-"v0.19.1"}
 shared_spack=${SHARED_SPACK:-"UPSTREAM"}
 
 # Dependencies
@@ -120,9 +121,7 @@ then
 
     if [[ -d /usr/workspace/pan13 ]]
     then
-        # where spack pulls installations from
-        upstream="/usr/workspace/pan13/spack_installs/${hostname}"
-        # upstream="/usr/workspace/sundials/spack_installs/${hostname}"
+        upstream="/usr/workspace/sundials/spack_installs/${spack_prefix}/${hostname}"
         mkdir -p "${upstream}"
         upstream_opt="--upstream=${upstream}"
     fi
@@ -205,7 +204,7 @@ then
     mkdir -p "${build_dir}" && cd "${build_dir}"
 
     date
-    
+
     $cmake_exe --version
 
     # configure

@@ -181,5 +181,3 @@ class Camp(CMakePackage, CudaPackage, ROCmPackage):
 
         options.append(self.define_from_variant("ENABLE_OPENMP", "openmp"))
         options.append(self.define_from_variant("ENABLE_TESTS", "tests"))
-
-        return options
