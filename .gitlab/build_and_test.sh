@@ -2,18 +2,19 @@
 
 # Debug spec and variables
 # COMPILER_SPEC=rocmcc@5.2.3
-COMPILER_SPEC=clang@14.0.0
+COMPILER_SPEC=clang@15.0.0
 AMDGPU_TARGET=gfx906
-ROCM_VERSION=5.2.3
+ROCM_VERSION=5.4.1
 
-SPEC="%${COMPILER_SPEC} cstd=99 cxxstd=14 precision=double amdgpu_target=${AMDGPU_TARGET} ~mpi+rocm+openmp+ginkgo ^ginkgo@git.234594c92b58e2384dfb43c2d08e7f43e2b58e7a+rocm+openmp amdgpu_target=${AMDGPU_TARGET} ^hip@${ROCM_VERSION} ^hsa-rocr-dev@${ROCM_VERSION} ^llvm-amdgpu@${ROCM_VERSION} ^hipsparse@${ROCM_VERSION} ^hipblas@${ROCM_VERSION}"
+SPEC="%${COMPILER_SPEC} cstd=99 cxxstd=14 precision=double ~int64 amdgpu_target=${AMDGPU_TARGET} ~mpi+openmp+rocm+magma+raja ^magma+rocm amdgpu_target=gfx906 ^raja+rocm~openmp~examples~exercises amdgpu_target=gfx906"
 
+# SPEC="%${COMPILER_SPEC} cstd=99 cxxstd=14 precision=double ~int64 amdgpu_target=${AMDGPU_TARGET} +mpi+openmp+rocm+raja+magma ^raja+rocm~openmp~examples~exercises amdgpu_target=gfx906 ^magma+rocm amdgpu_target=gfx906"
 
 # CUDA Debug
 # COMPILER_SPEC=gcc@8.3.1
 # CUDA_SPEC=cuda@11.5.0
 
-# SPEC="%${COMPILER_SPEC} cstd=99 cxxstd=14 precision=double +mpi+openmp+cuda~raja+superlu-dist+ginkgo+kokkos+kokkos-kernels cuda_arch=70 ^kokkos-kernels+cuda+serial cuda_arch=70 ^kokkos+cuda+wrapper~profiling cuda_arch=70 ^ginkgo+cuda cuda_arch=70 ^superlu-dist+cuda cuda_arch=70 ^${CUDA_SPEC}"
+# SPEC="%${COMPILER_SPEC} cstd=99 cxxstd=14 precision=double +mpi+openmp+cuda+kokkos+kokkos-kernels cuda_arch=70 ^kokkos-kernels+cuda+serial cuda_arch=70 ^kokkos+cuda+wrapper~profiling cuda_arch=70"
 
 
 # make sure lmod is loaded
@@ -37,7 +38,7 @@ sys_type=${SYS_TYPE:-""}
 py_env_path=${PYTHON_ENVIRONMENT_PATH:-""}
 
 spack_prefix=${SHARED_SPACK_PREFIX:-"v0.19.1"}
-shared_spack=${SHARED_SPACK:-"UPSTREAM"}
+shared_spack=${SHARED_SPACK:-"ON"}
 
 # Dependencies
 date
@@ -121,7 +122,7 @@ then
 
     if [[ -d /usr/workspace/pan13 ]]
     then
-        upstream="/usr/workspace/sundials/spack_installs/${spack_prefix}/${hostname}"
+        upstream="/usr/workspace/pan13/sundials/spack_installs/${spack_prefix}/${hostname}"
         mkdir -p "${upstream}"
         upstream_opt="--upstream=${upstream}"
     fi
