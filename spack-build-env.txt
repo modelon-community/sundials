@@ -19,7 +19,7 @@ function BASH_FUNC_module%%() {  if [ -z "${LMOD_SH_DBG_ON+x}" ]; then
  set +$__lmod_sh_dbg;
  echo "Shell debugging temporarily silenced: export LMOD_SH_DBG_ON=1 for Lmod's output" 1>&2;
  fi;
- eval "$($LMOD_CMD $LMOD_SHELL_PRGM "$@")" && eval "$(${LMOD_SETTARG_CMD:-:} -s sh)";
+ eval "$($LMOD_CMD shell "$@")" && eval "$(${LMOD_SETTARG_CMD:-:} -s sh)";
  __lmod_my_status=$?;
  if [ -n "${__lmod_sh_dbg:-}" ]; then
  echo "Shell debugging restarted" 1>&2;
@@ -37,15 +37,13 @@ function BASH_FUNC_scl%%() {  if [ "$1" = "load" -o "$1" = "unload" ]; then
 function BASH_FUNC_which%%() {  ( alias;
  eval ${which_declare} ) | /usr/bin/which --tty-only --read-alias --read-functions --show-tilde --show-dot $@
 }; export -f BASH_FUNC_which%%
-BROWSER=/g/g20/pan13/.vscode-server/bin/92da9481c0904c6adfe372c12da3b7748d74bdcb/bin/helpers/browser.sh; export BROWSER
 CC=/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/spack/lib/spack/env/clang/clang; export CC
-CMAKE_PREFIX_PATH=/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-15.0.0/raja-2022.03.0-vut4oksqtmuusbc7ac3a7tr3lnslpwss:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-15.0.0/camp-2022.03.2-f3s44uxxra7dcz4nsg2eqjpua7brrecn:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-15.0.0/blt-0.5.2-pq7ln5u77tgfshir3xnzemkffvmexcj2:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-15.0.0/magma-2.6.2-5bkz5awhnjebesvrlok2kmdk7pfbpvxi:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-15.0.0/netlib-lapack-3.10.1-x4sslydhlglkaiebw2ihcg3pfhwf6wlk:/opt/rocm-5.4.1:/opt/rocm-5.4.1:/opt/rocm-5.4.1:/opt/rocm-5.4.1/llvm:/opt/rocm-5.4.1:/opt/rocm-5.4.1/hip:/usr/tce/packages/cmake/cmake-3.19.2; export CMAKE_PREFIX_PATH
-COLORTERM=truecolor; export COLORTERM
+CMAKE_PREFIX_PATH=/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-14.0.0/raja-2022.03.0-trac6pycnbl5lpr47y3ywnjnedtpmajw:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-14.0.0/camp-2022.03.2-6gez5iqoyqp3dnp3u456krnfvxqavhoi:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-14.0.0/blt-0.5.2-gbirzbnmriqm2cduizme7jc6hu7ksgh2:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-14.0.0/magma-2.6.2-duxd2gmebnga6oiczmxlbilglp7mt7sc:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-14.0.0/netlib-lapack-3.10.1-2zzppqaow4k4gdgvsjmq4y2i3tfzwdfj:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-14.0.0/ginkgo-1.5.0.glu_experimental-lt7aiiq74f3dxcofdpwlfra6gik3r7fk:/opt/rocm-5.4.1:/opt/rocm-5.2.3:/opt/rocm-5.2.3/llvm:/opt/rocm-5.2.3:/opt/rocm-5.2.3:/opt/rocm-5.2.3:/opt/rocm-5.2.3/hip:/usr/tce/packages/cmake/cmake-3.19.2; export CMAKE_PREFIX_PATH
 CUDA_CACHE_DISABLE=1; export CUDA_CACHE_DISABLE
 CUDA_DEVICE_ORDER=PCI_BUS_ID; export CUDA_DEVICE_ORDER
 CVS_RSH=ssh; export CVS_RSH
 CXX=/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/spack/lib/spack/env/clang/clang++; export CXX
-DEVICE_LIB_PATH=/opt/rocm-5.4.1/amdgcn/bitcode; export DEVICE_LIB_PATH
+DEVICE_LIB_PATH=/opt/rocm-5.2.3/amdgcn/bitcode; export DEVICE_LIB_PATH
 EDITOR=/bin/vi; export EDITOR
 ENV=/g/g20/pan13/.bashrc; export ENV
 ENVIRONMENT=INTERACTIVE; export ENVIRONMENT
@@ -57,35 +55,34 @@ FLUX_F58_FORCE_ASCII=t; export FLUX_F58_FORCE_ASCII
 FLUX_MODULE_PATH=/usr/lib64/flux/modules; export FLUX_MODULE_PATH
 FLUX_PMI_LIBRARY_PATH=/usr/lib64/flux/libpmi.so; export FLUX_PMI_LIBRARY_PATH
 FLUX_TERMINUS_SESSION=0; export FLUX_TERMINUS_SESSION
-FLUX_URI=local:///var/tmp/pan13/flux-HplaOS/local-0; export FLUX_URI
-GIT_ASKPASS=/g/g20/pan13/.vscode-server/bin/92da9481c0904c6adfe372c12da3b7748d74bdcb/extensions/git/dist/askpass.sh; export GIT_ASKPASS
+FLUX_URI=local:///var/tmp/pan13/flux-Yf2BYV/local-0; export FLUX_URI
 GLOGIN=1; export GLOGIN
 GUESTFISH_INIT='\e[1;34m'; export GUESTFISH_INIT
 GUESTFISH_OUTPUT='\e[0m'; export GUESTFISH_OUTPUT
 GUESTFISH_PS1='\[\e[1;32m\]><fs>\[\e[0;31m\] '; export GUESTFISH_PS1
 GUESTFISH_RESTORE='\e[0m'; export GUESTFISH_RESTORE
 HCC_AMDGPU_TARGET=gfx906; export HCC_AMDGPU_TARGET
-HIPCC_COMPILE_FLAGS_APPEND=--rocm-path=/opt/rocm-5.4.1; export HIPCC_COMPILE_FLAGS_APPEND
-HIP_CLANG_PATH=/opt/rocm-5.4.1/llvm/bin; export HIP_CLANG_PATH
+HIPCC_COMPILE_FLAGS_APPEND=--rocm-path=/opt/rocm-5.2.3; export HIPCC_COMPILE_FLAGS_APPEND
+HIP_CLANG_PATH=/opt/rocm-5.2.3/llvm/bin; export HIP_CLANG_PATH
 HIP_COMPILER=clang; export HIP_COMPILER
-HIP_DEVICE_LIB_PATH=/opt/rocm-5.4.1/amdgcn/bitcode; export HIP_DEVICE_LIB_PATH
-HIP_PATH=/opt/rocm-5.4.1/hip; export HIP_PATH
+HIP_DEVICE_LIB_PATH=/opt/rocm-5.2.3/amdgcn/bitcode; export HIP_DEVICE_LIB_PATH
+HIP_PATH=/opt/rocm-5.2.3/hip; export HIP_PATH
 HIP_PLATFORM=amd; export HIP_PLATFORM
 HISTCONTROL=ignoredups; export HISTCONTROL
 HISTFILE=/g/g20/pan13/.bash_history; export HISTFILE
 HISTSIZE=50; export HISTSIZE
 HISTTIMEFORMAT='%Y-%m-%dT%H:%M:%S '; export HISTTIMEFORMAT
 HOME=/g/g20/pan13; export HOME
-HOSTNAME=corona82; export HOSTNAME
+HOSTNAME=corona212; export HOSTNAME
 HOST_GRP=linux; export HOST_GRP
-HSA_PATH=/opt/rocm-5.4.1/hsa; export HSA_PATH
+HSA_PATH=/opt/rocm-5.2.3/hsa; export HSA_PATH
 INPUTRC=/etc/inputrc; export INPUTRC
-KRB5CCNAME=FILE:/tmp/krb5cc_63157_etnog0; export KRB5CCNAME
+KRB5CCNAME=FILE:/tmp/krb5cc_63157_v5eKPv; export KRB5CCNAME
 LANG=en_US.UTF-8; export LANG
 LCSCHEDCLUSTER=corona; export LCSCHEDCLUSTER
 LC_ALL=C; export LC_ALL
 LESSOPEN='||/usr/bin/lesspipe.sh %s'; export LESSOPEN
-LLVM_PATH=/opt/rocm-5.4.1/llvm; export LLVM_PATH
+LLVM_PATH=/opt/rocm-5.2.3/llvm; export LLVM_PATH
 LMOD_CMD=/usr/share/lmod/lmod/libexec/lmod; export LMOD_CMD
 LMOD_COLORIZE=yes; export LMOD_COLORIZE
 LMOD_DIR=/usr/share/lmod/lmod/libexec; export LMOD_DIR
@@ -99,13 +96,13 @@ LMOD_PKG=/usr/share/lmod/lmod; export LMOD_PKG
 LMOD_PREPEND_BLOCK=normal; export LMOD_PREPEND_BLOCK
 LMOD_SETTARG_CMD=:; export LMOD_SETTARG_CMD
 LMOD_SETTARG_FULL_SUPPORT=no; export LMOD_SETTARG_FULL_SUPPORT
-LMOD_SHELL_PRGM=bash; export LMOD_SHELL_PRGM
 LMOD_SYSTEM_DEFAULT_MODULES=StdEnv; export LMOD_SYSTEM_DEFAULT_MODULES
-LMOD_VERSION=8.7.7; export LMOD_VERSION
+LMOD_VERSION=8.7.19; export LMOD_VERSION
 LMOD_arch=x86_64; export LMOD_arch
 LMOD_sys=Linux; export LMOD_sys
 LOADEDMODULES=intel-classic/2021.6.0-magic:mvapich2/2.3.6:StdEnv:python/3.9.12:rocm/5.2.3:cmake/3.23.1; export LOADEDMODULES
 LOGNAME=pan13; export LOGNAME
+LS_COLORS='rs=0:di=38;5;33:ln=38;5;51:mh=00:pi=40;38;5;11:so=38;5;13:do=38;5;5:bd=48;5;232;38;5;11:cd=48;5;232;38;5;3:or=48;5;232;38;5;9:mi=01;05;37;41:su=48;5;196;38;5;15:sg=48;5;11;38;5;16:ca=48;5;196;38;5;226:tw=48;5;10;38;5;16:ow=48;5;10;38;5;21:st=48;5;21;38;5;15:ex=38;5;40:*.tar=38;5;9:*.tgz=38;5;9:*.arc=38;5;9:*.arj=38;5;9:*.taz=38;5;9:*.lha=38;5;9:*.lz4=38;5;9:*.lzh=38;5;9:*.lzma=38;5;9:*.tlz=38;5;9:*.txz=38;5;9:*.tzo=38;5;9:*.t7z=38;5;9:*.zip=38;5;9:*.z=38;5;9:*.dz=38;5;9:*.gz=38;5;9:*.lrz=38;5;9:*.lz=38;5;9:*.lzo=38;5;9:*.xz=38;5;9:*.zst=38;5;9:*.tzst=38;5;9:*.bz2=38;5;9:*.bz=38;5;9:*.tbz=38;5;9:*.tbz2=38;5;9:*.tz=38;5;9:*.deb=38;5;9:*.rpm=38;5;9:*.jar=38;5;9:*.war=38;5;9:*.ear=38;5;9:*.sar=38;5;9:*.rar=38;5;9:*.alz=38;5;9:*.ace=38;5;9:*.zoo=38;5;9:*.cpio=38;5;9:*.7z=38;5;9:*.rz=38;5;9:*.cab=38;5;9:*.wim=38;5;9:*.swm=38;5;9:*.dwm=38;5;9:*.esd=38;5;9:*.jpg=38;5;13:*.jpeg=38;5;13:*.mjpg=38;5;13:*.mjpeg=38;5;13:*.gif=38;5;13:*.bmp=38;5;13:*.pbm=38;5;13:*.pgm=38;5;13:*.ppm=38;5;13:*.tga=38;5;13:*.xbm=38;5;13:*.xpm=38;5;13:*.tif=38;5;13:*.tiff=38;5;13:*.png=38;5;13:*.svg=38;5;13:*.svgz=38;5;13:*.mng=38;5;13:*.pcx=38;5;13:*.mov=38;5;13:*.mpg=38;5;13:*.mpeg=38;5;13:*.m2v=38;5;13:*.mkv=38;5;13:*.webm=38;5;13:*.ogm=38;5;13:*.mp4=38;5;13:*.m4v=38;5;13:*.mp4v=38;5;13:*.vob=38;5;13:*.qt=38;5;13:*.nuv=38;5;13:*.wmv=38;5;13:*.asf=38;5;13:*.rm=38;5;13:*.rmvb=38;5;13:*.flc=38;5;13:*.avi=38;5;13:*.fli=38;5;13:*.flv=38;5;13:*.gl=38;5;13:*.dl=38;5;13:*.xcf=38;5;13:*.xwd=38;5;13:*.yuv=38;5;13:*.cgm=38;5;13:*.emf=38;5;13:*.ogv=38;5;13:*.ogx=38;5;13:*.aac=38;5;45:*.au=38;5;45:*.flac=38;5;45:*.m4a=38;5;45:*.mid=38;5;45:*.midi=38;5;45:*.mka=38;5;45:*.mp3=38;5;45:*.mpc=38;5;45:*.ogg=38;5;45:*.ra=38;5;45:*.wav=38;5;45:*.oga=38;5;45:*.opus=38;5;45:*.spx=38;5;45:*.xspf=38;5;45:'; export LS_COLORS
 LUA_CPATH='/usr/lib64/lua/5.3/?.so;;;'; export LUA_CPATH
 LUA_PATH='/usr/share/lua/5.3/?.lua;;;'; export LUA_PATH
 MAIL=/usr/spool/mail/pan13; export MAIL
@@ -116,95 +113,72 @@ MPIBIND_TOPOFILE=/usr/tce/packages/mpibind/lstopo.corona.xml; export MPIBIND_TOP
 MV2_HOMOGENEOUS_CLUSTER=1; export MV2_HOMOGENEOUS_CLUSTER
 MV2_SUPPRESS_HCA_WARNINGS=1; export MV2_SUPPRESS_HCA_WARNINGS
 MV2_USE_RDMA_CM=0; export MV2_USE_RDMA_CM
-#OLDPWD=/g/g20/pan13; export OLDPWD
-PATH=/opt/rocm-5.4.1/llvm/bin:/opt/rocm-5.4.1/bin:/opt/rocm-5.4.1/hip/bin:/usr/tce/packages/cmake/cmake-3.19.2/bin:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/spack/lib/spack/env/clang:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/spack/lib/spack/env/case-insensitive:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/spack/lib/spack/env:/usr/tce/packages/cmake/cmake-3.23.1/bin:/opt/rocm-5.2.3/bin:/opt/rocm-5.2.3/llvm/bin:/opt/rocm-5.2.3/opencl/bin:/usr/tce/packages/python/python-3.9.12/bin:/g/g20/pan13/.vscode-server/bin/92da9481c0904c6adfe372c12da3b7748d74bdcb/bin/remote-cli:/usr/tce/packages/mvapich2/mvapich2-2.3.6-intel-classic-2021.6.0-magic/bin:/usr/tce/packages/intel-classic/intel-classic-2021.6.0-magic/bin:/usr/tce/bin:/usr/lib64/ccache:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:.; export PATH
+#OLDPWD=/g/g20/pan13/sundials/.gitlab; export OLDPWD
+PATH=/opt/rocm-5.2.3/llvm/bin:/opt/rocm-5.2.3/bin:/opt/rocm-5.2.3/hip/bin:/usr/tce/packages/cmake/cmake-3.19.2/bin:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/spack/lib/spack/env/clang:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/spack/lib/spack/env/case-insensitive:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/spack/lib/spack/env:/usr/tce/packages/cmake/cmake-3.23.1/bin:/opt/rocm-5.2.3/bin:/opt/rocm-5.2.3/llvm/bin:/opt/rocm-5.2.3/opencl/bin:/usr/tce/packages/python/python-3.9.12/bin:/usr/tce/packages/mvapich2/mvapich2-2.3.6-intel-classic-2021.6.0-magic/bin:/usr/tce/packages/intel-classic/intel-classic-2021.6.0-magic/bin:/usr/tce/bin:/usr/lib64/ccache:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:.; export PATH
 PFTP_CONFIG_FILENAME=/etc/pftp_config; export PFTP_CONFIG_FILENAME
-PKG_CONFIG_PATH=/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-15.0.0/raja-2022.03.0-vut4oksqtmuusbc7ac3a7tr3lnslpwss/lib/pkgconfig:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-15.0.0/magma-2.6.2-5bkz5awhnjebesvrlok2kmdk7pfbpvxi/lib/pkgconfig:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-15.0.0/netlib-lapack-3.10.1-x4sslydhlglkaiebw2ihcg3pfhwf6wlk/lib64/pkgconfig:/opt/rocm-5.4.1/share/pkgconfig:/opt/rocm-5.4.1/share/pkgconfig:/opt/rocm-5.4.1/share/pkgconfig:/opt/rocm-5.4.1/share/pkgconfig; export PKG_CONFIG_PATH
+PKG_CONFIG_PATH=/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-14.0.0/raja-2022.03.0-trac6pycnbl5lpr47y3ywnjnedtpmajw/lib/pkgconfig:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-14.0.0/magma-2.6.2-duxd2gmebnga6oiczmxlbilglp7mt7sc/lib/pkgconfig:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-14.0.0/netlib-lapack-3.10.1-2zzppqaow4k4gdgvsjmq4y2i3tfzwdfj/lib64/pkgconfig:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-14.0.0/ginkgo-1.5.0.glu_experimental-lt7aiiq74f3dxcofdpwlfra6gik3r7fk/lib64/pkgconfig:/opt/rocm-5.4.1/share/pkgconfig:/opt/rocm-5.2.3/share/pkgconfig:/opt/rocm-5.2.3/share/pkgconfig:/opt/rocm-5.2.3/share/pkgconfig:/opt/rocm-5.2.3/share/pkgconfig; export PKG_CONFIG_PATH
 #PWD=/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona; export PWD
-ROCMINFO_PATH=/opt/rocm-5.4.1; export ROCMINFO_PATH
-ROCM_PATH=/opt/rocm-5.4.1; export ROCM_PATH
+ROCMINFO_PATH=/opt/rocm-5.2.3; export ROCMINFO_PATH
+ROCM_PATH=/opt/rocm-5.2.3; export ROCM_PATH
 ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7; export ROCR_VISIBLE_DEVICES
 SHELL=/bin/bash; export SHELL
-SHLVL=8; export SHLVL
-SPACK_CC=/opt/rocm-5.4.1/llvm/bin/amdclang; export SPACK_CC
+SHLVL=4; export SHLVL
+SPACK_CC=/opt/rocm-5.2.3/llvm/bin/amdclang; export SPACK_CC
 SPACK_CC_RPATH_ARG=-Wl,-rpath,; export SPACK_CC_RPATH_ARG
-SPACK_COMPILER_IMPLICIT_RPATHS=/opt/rh/gcc-toolset-12/root/usr/lib/gcc/x86_64-redhat-linux/12; export SPACK_COMPILER_IMPLICIT_RPATHS
-SPACK_COMPILER_SPEC=clang@15.0.0; export SPACK_COMPILER_SPEC
-SPACK_CXX=/opt/rocm-5.4.1/llvm/bin/amdclang++; export SPACK_CXX
+SPACK_COMPILER_IMPLICIT_RPATHS=/opt/rh/gcc-toolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10:/opt/rocm-5.2.3/llvm/lib; export SPACK_COMPILER_IMPLICIT_RPATHS
+SPACK_COMPILER_SPEC=clang@14.0.0; export SPACK_COMPILER_SPEC
+SPACK_CXX=/opt/rocm-5.2.3/llvm/bin/amdclang++; export SPACK_CXX
 SPACK_CXX_RPATH_ARG=-Wl,-rpath,; export SPACK_CXX_RPATH_ARG
 SPACK_DEBUG_LOG_DIR=/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona; export SPACK_DEBUG_LOG_DIR
-SPACK_DEBUG_LOG_ID=sundials-m4lxb7p; export SPACK_DEBUG_LOG_ID
+SPACK_DEBUG_LOG_ID=sundials-quk6fj4; export SPACK_DEBUG_LOG_ID
 SPACK_DISABLE_LOCAL_CONFIG=''; export SPACK_DISABLE_LOCAL_CONFIG
 SPACK_DTAGS_TO_ADD=--disable-new-dtags; export SPACK_DTAGS_TO_ADD
 SPACK_DTAGS_TO_STRIP=--enable-new-dtags; export SPACK_DTAGS_TO_STRIP
 SPACK_ENV_PATH=/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/spack/lib/spack/env:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/spack/lib/spack/env/case-insensitive:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/spack/lib/spack/env/clang; export SPACK_ENV_PATH
-SPACK_F77=/opt/rocm-5.4.1/llvm/bin/amdflang; export SPACK_F77
+SPACK_F77=/opt/rocm-5.2.3/llvm/bin/amdflang; export SPACK_F77
 SPACK_F77_RPATH_ARG=-Wl,-rpath,; export SPACK_F77_RPATH_ARG
-SPACK_FC=/opt/rocm-5.4.1/llvm/bin/amdflang; export SPACK_FC
+SPACK_FC=/opt/rocm-5.2.3/llvm/bin/amdflang; export SPACK_FC
 SPACK_FC_RPATH_ARG=-Wl,-rpath,; export SPACK_FC_RPATH_ARG
-SPACK_INCLUDE_DIRS=/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-15.0.0/raja-2022.03.0-vut4oksqtmuusbc7ac3a7tr3lnslpwss/include:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-15.0.0/camp-2022.03.2-f3s44uxxra7dcz4nsg2eqjpua7brrecn/include:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-15.0.0/magma-2.6.2-5bkz5awhnjebesvrlok2kmdk7pfbpvxi/include:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-15.0.0/netlib-lapack-3.10.1-x4sslydhlglkaiebw2ihcg3pfhwf6wlk/include:/opt/rocm-5.4.1/include:/opt/rocm-5.4.1/llvm/include:/opt/rocm-5.4.1/hip/include; export SPACK_INCLUDE_DIRS
+SPACK_INCLUDE_DIRS=/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-14.0.0/raja-2022.03.0-trac6pycnbl5lpr47y3ywnjnedtpmajw/include:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-14.0.0/camp-2022.03.2-6gez5iqoyqp3dnp3u456krnfvxqavhoi/include:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-14.0.0/magma-2.6.2-duxd2gmebnga6oiczmxlbilglp7mt7sc/include:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-14.0.0/netlib-lapack-3.10.1-2zzppqaow4k4gdgvsjmq4y2i3tfzwdfj/include:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-14.0.0/ginkgo-1.5.0.glu_experimental-lt7aiiq74f3dxcofdpwlfra6gik3r7fk/include:/opt/rocm-5.4.1/include:/opt/rocm-5.2.3/include:/opt/rocm-5.2.3/llvm/include:/opt/rocm-5.2.3/hip/include; export SPACK_INCLUDE_DIRS
 SPACK_LINKER_ARG=-Wl,; export SPACK_LINKER_ARG
-SPACK_LINK_DIRS=/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-15.0.0/raja-2022.03.0-vut4oksqtmuusbc7ac3a7tr3lnslpwss/lib:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-15.0.0/camp-2022.03.2-f3s44uxxra7dcz4nsg2eqjpua7brrecn/lib:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-15.0.0/magma-2.6.2-5bkz5awhnjebesvrlok2kmdk7pfbpvxi/lib:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-15.0.0/netlib-lapack-3.10.1-x4sslydhlglkaiebw2ihcg3pfhwf6wlk/lib64:/opt/rocm-5.4.1/lib:/opt/rocm-5.4.1/llvm/lib:/opt/rocm-5.4.1/hip/lib; export SPACK_LINK_DIRS
+SPACK_LINK_DIRS=/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-14.0.0/raja-2022.03.0-trac6pycnbl5lpr47y3ywnjnedtpmajw/lib:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-14.0.0/camp-2022.03.2-6gez5iqoyqp3dnp3u456krnfvxqavhoi/lib:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-14.0.0/magma-2.6.2-duxd2gmebnga6oiczmxlbilglp7mt7sc/lib:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-14.0.0/netlib-lapack-3.10.1-2zzppqaow4k4gdgvsjmq4y2i3tfzwdfj/lib64:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-14.0.0/ginkgo-1.5.0.glu_experimental-lt7aiiq74f3dxcofdpwlfra6gik3r7fk/lib64:/opt/rocm-5.4.1/lib:/opt/rocm-5.2.3/lib:/opt/rocm-5.2.3/lib64:/opt/rocm-5.2.3/llvm/lib:/opt/rocm-5.2.3/hip/lib; export SPACK_LINK_DIRS
 SPACK_PYTHON=/usr/tce/packages/python/python-3.9.12/bin/python3; export SPACK_PYTHON
-SPACK_RPATH_DIRS=/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-15.0.0/sundials-develop-m4lxb7pllqhkng52d3dkkcgwvkqqbdn5/lib:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-15.0.0/sundials-develop-m4lxb7pllqhkng52d3dkkcgwvkqqbdn5/lib64:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-15.0.0/raja-2022.03.0-vut4oksqtmuusbc7ac3a7tr3lnslpwss/lib:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-15.0.0/camp-2022.03.2-f3s44uxxra7dcz4nsg2eqjpua7brrecn/lib:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-15.0.0/magma-2.6.2-5bkz5awhnjebesvrlok2kmdk7pfbpvxi/lib:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-15.0.0/netlib-lapack-3.10.1-x4sslydhlglkaiebw2ihcg3pfhwf6wlk/lib64:/opt/rocm-5.4.1/lib:/opt/rocm-5.4.1/llvm/lib:/opt/rocm-5.4.1/hip/lib; export SPACK_RPATH_DIRS
-SPACK_SHORT_SPEC='sundials@develop%clang@15.0.0+ARKODE+CVODE+CVODES+IDA+IDAS+KINSOL~cuda+examples+examples-install~f2003~fcmix+generic-math~ginkgo~hypre~int64~ipo~klu~kokkos~kokkos-kernels~lapack+magma~monitoring~mpi+openmp~petsc~profiling~pthread+raja+rocm+shared+static~superlu-dist~superlu-mt~sycl~trilinos amdgpu_target=gfx906 build_system=cmake build_type=RelWithDebInfo cstd=99 cxxstd=14 dev_path=/g/g20/pan13/sundials logging-level=0 logging-mpi=OFF precision=double arch=linux-rhel8-zen2/m4lxb7p'; export SPACK_SHORT_SPEC
+SPACK_RPATH_DIRS=/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-14.0.0/sundials-develop-quk6fj42yvbsemlixh3x66psepwcfp6y/lib:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-14.0.0/sundials-develop-quk6fj42yvbsemlixh3x66psepwcfp6y/lib64:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-14.0.0/raja-2022.03.0-trac6pycnbl5lpr47y3ywnjnedtpmajw/lib:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-14.0.0/camp-2022.03.2-6gez5iqoyqp3dnp3u456krnfvxqavhoi/lib:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-14.0.0/magma-2.6.2-duxd2gmebnga6oiczmxlbilglp7mt7sc/lib:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-14.0.0/netlib-lapack-3.10.1-2zzppqaow4k4gdgvsjmq4y2i3tfzwdfj/lib64:/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-14.0.0/ginkgo-1.5.0.glu_experimental-lt7aiiq74f3dxcofdpwlfra6gik3r7fk/lib64:/opt/rocm-5.4.1/lib:/opt/rocm-5.2.3/lib:/opt/rocm-5.2.3/lib64:/opt/rocm-5.2.3/llvm/lib:/opt/rocm-5.2.3/hip/lib; export SPACK_RPATH_DIRS
+SPACK_SHORT_SPEC='sundials@develop%clang@14.0.0+ARKODE+CVODE+CVODES+IDA+IDAS+KINSOL~cuda+examples+examples-install~f2003~fcmix+generic-math+ginkgo~hypre~int64~ipo~klu~kokkos~kokkos-kernels~lapack+magma~monitoring~mpi+openmp~petsc~profiling~pthread+raja+rocm+shared+static~superlu-dist~superlu-mt~sycl~trilinos amdgpu_target=gfx906 build_system=cmake build_type=RelWithDebInfo cstd=99 cxxstd=14 dev_path=/g/g20/pan13/sundials logging-level=0 logging-mpi=OFF precision=double arch=linux-rhel8-zen2/quk6fj4'; export SPACK_SHORT_SPEC
 SPACK_SYSTEM_DIRS=/bin:/usr/bin:/usr/local/bin:/bin64:/usr/bin64:/usr/local/bin64:/include:/usr/include:/usr/local/include:/lib:/usr/lib:/usr/local/lib:/lib64:/usr/lib64:/usr/local/lib64:/:/usr:/usr/local; export SPACK_SYSTEM_DIRS
 SPACK_TARGET_ARGS='-march=znver2 -mtune=znver2'; export SPACK_TARGET_ARGS
-SPACK_USER_CACHE_PATH=/usr/workspace/pan13/ci-installs/corona/manual_job_1678378757/spack-user-cache; export SPACK_USER_CACHE_PATH
+SPACK_USER_CACHE_PATH=/usr/workspace/pan13/ci-installs/corona/manual_job_1678466404/spack-user-cache; export SPACK_USER_CACHE_PATH
 SSH_ASKPASS=/usr/libexec/openssh/gnome-ssh-askpass; export SSH_ASKPASS
-SSH_CLIENT='128.15.247.203 50425 22'; export SSH_CLIENT
-SSH_CONNECTION='128.15.247.203 50425 134.9.50.28 22'; export SSH_CONNECTION
+SSH_CLIENT='128.15.247.224 59680 22'; export SSH_CLIENT
+SSH_CONNECTION='128.15.247.224 59680 134.9.50.70 22'; export SSH_CONNECTION
+SSH_TTY=/dev/pts/11; export SSH_TTY
 SYS_TYPE=toss_4_x86_64_ib; export SYS_TYPE
 S_COLORS=auto; export S_COLORS
 TCE_STDENV_LOADED=true; export TCE_STDENV_LOADED
 TERM=xterm-256color; export TERM
-TERM_PROGRAM=vscode; export TERM_PROGRAM
-TERM_PROGRAM_VERSION=1.76.0; export TERM_PROGRAM_VERSION
-TMP=/var/tmp/pan13; export TMP
 TMPDIR=/var/tmp/pan13; export TMPDIR
 USER=pan13; export USER
-VSCODE_GIT_ASKPASS_EXTRA_ARGS=''; export VSCODE_GIT_ASKPASS_EXTRA_ARGS
-VSCODE_GIT_ASKPASS_MAIN=/g/g20/pan13/.vscode-server/bin/92da9481c0904c6adfe372c12da3b7748d74bdcb/extensions/git/dist/askpass-main.js; export VSCODE_GIT_ASKPASS_MAIN
-VSCODE_GIT_ASKPASS_NODE=/g/g20/pan13/.vscode-server/bin/92da9481c0904c6adfe372c12da3b7748d74bdcb/node; export VSCODE_GIT_ASKPASS_NODE
-VSCODE_GIT_IPC_HANDLE=/var/tmp/pan13/vscode-git-a66139bf0f.sock; export VSCODE_GIT_IPC_HANDLE
-VSCODE_IPC_HOOK_CLI=/tmp/vscode-ipc-5b95a76b-7f7a-48db-bf70-25f12a26a6be.sock; export VSCODE_IPC_HOOK_CLI
 XDG_DATA_DIRS=/g/g20/pan13/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share; export XDG_DATA_DIRS
 _LMFILES_=/usr/tce/modulefiles/toolchains/Core/intel-classic/2021.6.0-magic.lua:/usr/tce/modulefiles/Compiler/intel-classic/2021.6.0-magic/mvapich2/2.3.6.lua:/usr/tce/modulefiles/Core/StdEnv.lua:/usr/tce/modulefiles/Core/python/3.9.12.lua:/usr/tce/modulefiles/toolchains/Core/rocm/5.2.3:/usr/tce/modulefiles/Core/cmake/3.23.1.lua; export _LMFILES_
 _ModuleTable001_=X01vZHVsZVRhYmxlXyA9IHsKTVR2ZXJzaW9uID0gMywKY19yZWJ1aWxkVGltZSA9IGZhbHNlLApjX3Nob3J0VGltZSA9IGZhbHNlLApkZXB0aFQgPSB7fSwKZmFtaWx5ID0gewpjb21waWxlciA9ICJpbnRlbC1jbGFzc2ljIiwKbXBpID0gIm12YXBpY2gyIiwKfSwKbVQgPSB7ClN0ZEVudiA9IHsKZm4gPSAiL3Vzci90Y2UvbW9kdWxlZmlsZXMvQ29yZS9TdGRFbnYubHVhIiwKZnVsbE5hbWUgPSAiU3RkRW52IiwKbG9hZE9yZGVyID0gMywKcHJvcFQgPSB7Cmxtb2QgPSB7CnN0aWNreSA9IDEsCn0sCn0sCnN0YWNrRGVwdGggPSAwLApzdGF0dXMgPSAiYWN0aXZlIiwKdXNlck5hbWUgPSAiU3RkRW52IiwKd1YgPSAiTS4qemZpbmFsIiwKfSwKY21ha2UgPSB7CmZuID0gIi91c3Iv; export _ModuleTable001_
-_ModuleTable002_=dGNlL21vZHVsZWZpbGVzL0NvcmUvY21ha2UvMy4yMy4xLmx1YSIsCmZ1bGxOYW1lID0gImNtYWtlLzMuMjMuMSIsCmxvYWRPcmRlciA9IDYsCnByb3BUID0ge30sCnN0YWNrRGVwdGggPSAwLApzdGF0dXMgPSAiYWN0aXZlIiwKdXNlck5hbWUgPSAiY21ha2UvMy4yMyIsCndWID0gIl4wMDAwMDAwMy4wMDAwMDAwMjMuMDAwMDAwMDAxLip6ZmluYWwiLAp9LApbImludGVsLWNsYXNzaWMiXSA9IHsKZm4gPSAiL3Vzci90Y2UvbW9kdWxlZmlsZXMvdG9vbGNoYWlucy9Db3JlL2ludGVsLWNsYXNzaWMvMjAyMS42LjAtbWFnaWMubHVhIiwKZnVsbE5hbWUgPSAiaW50ZWwtY2xhc3NpYy8yMDIxLjYuMC1tYWdpYyIsCmxvYWRPcmRlciA9IDEsCnByb3BUID0ge30sCnN0YWNrRGVwdGgg; export _ModuleTable002_
-_ModuleTable003_=PSAxLApzdGF0dXMgPSAiYWN0aXZlIiwKdXNlck5hbWUgPSAiaW50ZWwtY2xhc3NpYy8yMDIxLjYuMC1tYWdpYyIsCndWID0gIl4wMDAwMjAyMS4wMDAwMDAwMDYuKm1hZ2ljLip6ZmluYWwiLAp9LAptdmFwaWNoMiA9IHsKZm4gPSAiL3Vzci90Y2UvbW9kdWxlZmlsZXMvQ29tcGlsZXIvaW50ZWwtY2xhc3NpYy8yMDIxLjYuMC1tYWdpYy9tdmFwaWNoMi8yLjMuNi5sdWEiLApmdWxsTmFtZSA9ICJtdmFwaWNoMi8yLjMuNiIsCmxvYWRPcmRlciA9IDIsCnByb3BUID0ge30sCnN0YWNrRGVwdGggPSAxLApzdGF0dXMgPSAiYWN0aXZlIiwKdXNlck5hbWUgPSAibXZhcGljaDIvMi4zLjYiLAp3ViA9ICIwMDAwMDAwMDIuMDAwMDAwMDAzLjAwMDAwMDAwNi4qemZpbmFsIiwKfSwKcHl0; export _ModuleTable003_
-_ModuleTable004_=aG9uID0gewpmbiA9ICIvdXNyL3RjZS9tb2R1bGVmaWxlcy9Db3JlL3B5dGhvbi8zLjkuMTIubHVhIiwKZnVsbE5hbWUgPSAicHl0aG9uLzMuOS4xMiIsCmxvYWRPcmRlciA9IDQsCnByb3BUID0ge30sCnN0YWNrRGVwdGggPSAwLApzdGF0dXMgPSAiYWN0aXZlIiwKdXNlck5hbWUgPSAicHl0aG9uLzMuOS4xMiIsCndWID0gIl4wMDAwMDAwMy4wMDAwMDAwMDkuMDAwMDAwMDEyLip6ZmluYWwiLAp9LApyb2NtID0gewpmbiA9ICIvdXNyL3RjZS9tb2R1bGVmaWxlcy90b29sY2hhaW5zL0NvcmUvcm9jbS81LjIuMyIsCmZ1bGxOYW1lID0gInJvY20vNS4yLjMiLApsb2FkT3JkZXIgPSA1LApwcm9wVCA9IHt9LApzdGFja0RlcHRoID0gMCwKc3RhdHVzID0gImFjdGl2ZSIsCnVzZXJO; export _ModuleTable004_
-_ModuleTable005_=YW1lID0gInJvY20vNS4yLjMiLAp3ViA9ICIwMDAwMDAwMDUuMDAwMDAwMDAyLjAwMDAwMDAwMy4qemZpbmFsIiwKfSwKfSwKbXBhdGhBID0gewoiL3Vzci90Y2UvbW9kdWxlZmlsZXMvTVBJL2ludGVsLWNsYXNzaWMvMjAyMS42LjAtbWFnaWMvbXZhcGljaDIvMi4zLjYiCiwgIi91c3IvdGNlL21vZHVsZWZpbGVzL0NvbXBpbGVyL2ludGVsLWNsYXNzaWMvMjAyMS42LjAtbWFnaWMiLCAiL3Vzci90Y2UvbW9kdWxlZmlsZXMvdG9vbGNoYWlucy9Db3JlIgosICIvZXRjL3NjbC9tb2R1bGVmaWxlcyIsICIvdXNyL3RjZS9tb2R1bGVmaWxlcy9Db3JlIiwgIi91c3IvYXBwcy9tb2R1bGVmaWxlcyIsICIvdXNyL3NoYXJlL21vZHVsZWZpbGVzL0xpbnV4IgosICIvdXNyL3NoYXJlL21v; export _ModuleTable005_
-_ModuleTable006_=ZHVsZWZpbGVzL0NvcmUiLCAiL3Vzci9zaGFyZS9sbW9kL2xtb2QvbW9kdWxlZmlsZXMvQ29yZSIsICIvY29sbGFiL3Vzci9nbG9iYWwvdG9vbHMvbW9kdWxlZmlsZXMvdG9zc180X3g4Nl82NF9pYi9Db3JlIiwKfSwKc3lzdGVtQmFzZU1QQVRIID0gIi9ldGMvc2NsL21vZHVsZWZpbGVzOi91c3IvdGNlL21vZHVsZWZpbGVzL0NvcmU6L3Vzci9hcHBzL21vZHVsZWZpbGVzOi91c3Ivc2hhcmUvbW9kdWxlZmlsZXMvTGludXg6L3Vzci9zaGFyZS9tb2R1bGVmaWxlcy9Db3JlOi91c3Ivc2hhcmUvbG1vZC9sbW9kL21vZHVsZWZpbGVzL0NvcmUiLAp9Cg==; export _ModuleTable006_
+_ModuleTable002_=dGNlL21vZHVsZWZpbGVzL0NvcmUvY21ha2UvMy4yMy4xLmx1YSIsCmZ1bGxOYW1lID0gImNtYWtlLzMuMjMuMSIsCmxvYWRPcmRlciA9IDYsCnByb3BUID0ge30sCnN0YWNrRGVwdGggPSAwLApzdGF0dXMgPSAiYWN0aXZlIiwKdXNlck5hbWUgPSAiY21ha2UvMy4yMy4xIiwKd1YgPSAiXjAwMDAwMDAzLjAwMDAwMDAyMy4wMDAwMDAwMDEuKnpmaW5hbCIsCn0sClsiaW50ZWwtY2xhc3NpYyJdID0gewpmbiA9ICIvdXNyL3RjZS9tb2R1bGVmaWxlcy90b29sY2hhaW5zL0NvcmUvaW50ZWwtY2xhc3NpYy8yMDIxLjYuMC1tYWdpYy5sdWEiLApmdWxsTmFtZSA9ICJpbnRlbC1jbGFzc2ljLzIwMjEuNi4wLW1hZ2ljIiwKbG9hZE9yZGVyID0gMSwKcHJvcFQgPSB7fSwKc3RhY2tEZXB0; export _ModuleTable002_
+_ModuleTable003_=aCA9IDEsCnN0YXR1cyA9ICJhY3RpdmUiLAp1c2VyTmFtZSA9ICJpbnRlbC1jbGFzc2ljLzIwMjEuNi4wLW1hZ2ljIiwKd1YgPSAiXjAwMDAyMDIxLjAwMDAwMDAwNi4qbWFnaWMuKnpmaW5hbCIsCn0sCm12YXBpY2gyID0gewpmbiA9ICIvdXNyL3RjZS9tb2R1bGVmaWxlcy9Db21waWxlci9pbnRlbC1jbGFzc2ljLzIwMjEuNi4wLW1hZ2ljL212YXBpY2gyLzIuMy42Lmx1YSIsCmZ1bGxOYW1lID0gIm12YXBpY2gyLzIuMy42IiwKbG9hZE9yZGVyID0gMiwKcHJvcFQgPSB7fSwKc3RhY2tEZXB0aCA9IDEsCnN0YXR1cyA9ICJhY3RpdmUiLAp1c2VyTmFtZSA9ICJtdmFwaWNoMi8yLjMuNiIsCndWID0gIjAwMDAwMDAwMi4wMDAwMDAwMDMuMDAwMDAwMDA2Lip6ZmluYWwiLAp9LApw; export _ModuleTable003_
+_ModuleTable004_=eXRob24gPSB7CmZuID0gIi91c3IvdGNlL21vZHVsZWZpbGVzL0NvcmUvcHl0aG9uLzMuOS4xMi5sdWEiLApmdWxsTmFtZSA9ICJweXRob24vMy45LjEyIiwKbG9hZE9yZGVyID0gNCwKcHJvcFQgPSB7fSwKc3RhY2tEZXB0aCA9IDAsCnN0YXR1cyA9ICJhY3RpdmUiLAp1c2VyTmFtZSA9ICJweXRob24vMy45LjEyIiwKd1YgPSAiXjAwMDAwMDAzLjAwMDAwMDAwOS4wMDAwMDAwMTIuKnpmaW5hbCIsCn0sCnJvY20gPSB7CmZuID0gIi91c3IvdGNlL21vZHVsZWZpbGVzL3Rvb2xjaGFpbnMvQ29yZS9yb2NtLzUuMi4zIiwKZnVsbE5hbWUgPSAicm9jbS81LjIuMyIsCmxvYWRPcmRlciA9IDUsCnByb3BUID0ge30sCnN0YWNrRGVwdGggPSAwLApzdGF0dXMgPSAiYWN0aXZlIiwKdXNl; export _ModuleTable004_
+_ModuleTable005_=ck5hbWUgPSAicm9jbS81LjIuMyIsCndWID0gIjAwMDAwMDAwNS4wMDAwMDAwMDIuMDAwMDAwMDAzLip6ZmluYWwiLAp9LAp9LAptcGF0aEEgPSB7CiIvdXNyL3RjZS9tb2R1bGVmaWxlcy9NUEkvaW50ZWwtY2xhc3NpYy8yMDIxLjYuMC1tYWdpYy9tdmFwaWNoMi8yLjMuNiIKLCAiL3Vzci90Y2UvbW9kdWxlZmlsZXMvQ29tcGlsZXIvaW50ZWwtY2xhc3NpYy8yMDIxLjYuMC1tYWdpYyIsICIvdXNyL3RjZS9tb2R1bGVmaWxlcy90b29sY2hhaW5zL0NvcmUiCiwgIi9ldGMvc2NsL21vZHVsZWZpbGVzIiwgIi91c3IvdGNlL21vZHVsZWZpbGVzL0NvcmUiLCAiL3Vzci9hcHBzL21vZHVsZWZpbGVzIgosICIvdXNyL3NoYXJlL21vZHVsZWZpbGVzL0xpbnV4IiwgIi91c3Ivc2hhcmUv; export _ModuleTable005_
+_ModuleTable006_=bW9kdWxlZmlsZXMvQ29yZSIsICIvdXNyL3NoYXJlL2xtb2QvbG1vZC9tb2R1bGVmaWxlcy9Db3JlIiwgIi9jb2xsYWIvdXNyL2dsb2JhbC90b29scy9tb2R1bGVmaWxlcy90b3NzXzRfeDg2XzY0X2liL0NvcmUiLAp9LApzeXN0ZW1CYXNlTVBBVEggPSAiL2V0Yy9zY2wvbW9kdWxlZmlsZXM6L3Vzci90Y2UvbW9kdWxlZmlsZXMvQ29yZTovdXNyL2FwcHMvbW9kdWxlZmlsZXM6L3Vzci9zaGFyZS9tb2R1bGVmaWxlcy9MaW51eDovdXNyL3NoYXJlL21vZHVsZWZpbGVzL0NvcmU6L3Vzci9zaGFyZS9sbW9kL2xtb2QvbW9kdWxlZmlsZXMvQ29yZSIsCn0K; export _ModuleTable006_
 _ModuleTable_Sz_=6; export _ModuleTable_Sz_
 __LMOD_REF_COUNT_ACLOCAL_PATH=/usr/tce/packages/cmake/cmake-3.23.1/share/aclocal:1; export __LMOD_REF_COUNT_ACLOCAL_PATH
 __LMOD_REF_COUNT_CMAKE_PREFIX_PATH='/usr/tce/packages/cmake/cmake-3.23.1:1;/opt/rocm-5.2.3:1'; export __LMOD_REF_COUNT_CMAKE_PREFIX_PATH
 __LMOD_REF_COUNT_LD_LIBRARY_PATH='/opt/rocm-5.2.3/lib:1;/opt/rocm-5.2.3/hip/lib:1;/opt/rocm-5.2.3/hsa/lib:1;/opt/rocm-5.2.3/lib64:1;/usr/tce/packages/python/python-3.9.12/lib:1'; export __LMOD_REF_COUNT_LD_LIBRARY_PATH
 __LMOD_REF_COUNT_MANPATH='/opt/rocm-5.2.3/share/man:1;/usr/tce/packages/python/python-3.9.12/share/man:1;/usr/share/man:1;/usr/tce/packages/intel-classic/intel-classic-2021.6.0-magic/man/common:1;/usr/share/lmod/lmod/share/man:1;/usr/man:1;/usr/local/man:1;/usr/X11R6/man:1;/usr/lib64/mvapich/default/man:1;/usr/tce/man:1'; export __LMOD_REF_COUNT_MANPATH
 __LMOD_REF_COUNT_MODULEPATH='/usr/tce/modulefiles/MPI/intel-classic/2021.6.0-magic/mvapich2/2.3.6:1;/usr/tce/modulefiles/Compiler/intel-classic/2021.6.0-magic:1;/usr/tce/modulefiles/toolchains/Core:1;/etc/scl/modulefiles:1;/usr/tce/modulefiles/Core:1;/usr/apps/modulefiles:1;/usr/share/modulefiles/Linux:1;/usr/share/modulefiles/Core:1;/usr/share/lmod/lmod/modulefiles/Core:1;/collab/usr/global/tools/modulefiles/toss_4_x86_64_ib/Core:1'; export __LMOD_REF_COUNT_MODULEPATH
-__LMOD_REF_COUNT_PATH='/usr/tce/packages/cmake/cmake-3.23.1/bin:1;/opt/rocm-5.2.3/bin:1;/opt/rocm-5.2.3/llvm/bin:1;/opt/rocm-5.2.3/opencl/bin:1;/usr/tce/packages/python/python-3.9.12/bin:1;/g/g20/pan13/.vscode-server/bin/92da9481c0904c6adfe372c12da3b7748d74bdcb/bin/remote-cli:1;/usr/tce/packages/mvapich2/mvapich2-2.3.6-intel-classic-2021.6.0-magic/bin:1;/usr/tce/packages/intel-classic/intel-classic-2021.6.0-magic/bin:1;/usr/tce/bin:1;/usr/lib64/ccache:1;/usr/local/bin:1;/usr/bin:1;/usr/local/sbin:1;/usr/sbin:1;.:1'; export __LMOD_REF_COUNT_PATH
+__LMOD_REF_COUNT_PATH='/usr/tce/packages/cmake/cmake-3.23.1/bin:1;/opt/rocm-5.2.3/bin:1;/opt/rocm-5.2.3/llvm/bin:1;/opt/rocm-5.2.3/opencl/bin:1;/usr/tce/packages/python/python-3.9.12/bin:1;/usr/tce/packages/mvapich2/mvapich2-2.3.6-intel-classic-2021.6.0-magic/bin:1;/usr/tce/packages/intel-classic/intel-classic-2021.6.0-magic/bin:1;/usr/tce/bin:1;/usr/lib64/ccache:1;/usr/local/bin:1;/usr/bin:1;/usr/local/sbin:1;/usr/sbin:1;.:1'; export __LMOD_REF_COUNT_PATH
 which_declare='declare -f'; export which_declare
- which_declare
-F_COUNT_PATH
+3.9.12/share/man:1;/usr/share/man:1;/usr/tce/packages/intel-classic/intel-classic-2021.6.0-magic/man/common:1;/usr/share/lmod/lmod/share/man:1;/usr/man:1;/usr/local/man:1;/usr/X11R6/man:1;/usr/lib64/mvapich/default/man:1;/usr/tce/man:1'; export __LMOD_REF_COUNT_MANPATH
+__LMOD_REF_COUNT_MODULEPATH='/usr/tce/modulefiles/MPI/intel-classic/2021.6.0-magic/mvapich2/2.3.6:1;/usr/tce/modulefiles/Compiler/intel-classic/2021.6.0-magic:1;/usr/tce/modulefiles/toolchains/Core:1;/etc/scl/modulefiles:1;/usr/tce/modulefiles/Core:1;/usr/apps/modulefiles:1;/usr/share/modulefiles/Linux:1;/usr/share/modulefiles/Core:1;/usr/share/lmod/lmod/modulefiles/Core:1;/collab/usr/global/tools/modulefiles/toss_4_x86_64_ib/Core:1'; export __LMOD_REF_COUNT_MODULEPATH
+__LMOD_REF_COUNT_PATH='/usr/tce/packages/cmake/cmake-3.23.1/bin:1;/opt/rocm-5.2.3/bin:1;/opt/rocm-5.2.3/llvm/bin:1;/opt/rocm-5.2.3/opencl/bin:1;/usr/tce/packages/python/python-3.9.12/bin:1;/usr/tce/packages/mvapich2/mvapich2-2.3.6-intel-classic-2021.6.0-magic/bin:1;/usr/tce/packages/intel-classic/intel-classic-2021.6.0-magic/bin:1;/usr/tce/bin:1;/usr/lib64/ccache:1;/usr/local/bin:1;/usr/bin:1;/usr/local/sbin:1;/usr/sbin:1;.:1'; export __LMOD_REF_COUNT_PATH
 which_declare='declare -f'; export which_declare
-re~int64~ipo~klu+kokkos+kokkos-kernels~lapack~magma~monitoring+mpi+openmp~petsc~profiling~pthread~raja~rocm+shared+static+superlu-dist~superlu-mt~sycl~trilinos build_system=cmake build_type=RelWithDebInfo cstd=99 cuda_arch=70 cxxstd=14 dev_path=/g/g20/pan13/sundials logging-level=0 logging-mpi=OFF precision=double arch=linux-rhel7-ppc64le/drbhrvi'; export SPACK_SHORT_SPEC
-SPACK_SYSTEM_DIRS=/bin:/usr/bin:/usr/local/bin:/bin64:/usr/bin64:/usr/local/bin64:/include:/usr/include:/usr/local/include:/lib:/usr/lib:/usr/local/lib:/lib64:/usr/lib64:/usr/local/lib64:/:/usr:/usr/local; export SPACK_SYSTEM_DIRS
-SPACK_TARGET_ARGS='-mcpu=powerpc64le -mtune=powerpc64le'; export SPACK_TARGET_ARGS
-SPACK_USER_CACHE_PATH=/usr/workspace/pan13/ci-installs/lassen/manual_job_1678301765/spack-user-cache; export SPACK_USER_CACHE_PATH
-SSH_ASKPASS=/usr/libexec/openssh/gnome-ssh-askpass; export SSH_ASKPASS
-SSH_CLIENT='134.9.50.70 39360 622'; export SSH_CLIENT
-SSH_CONNECTION='134.9.50.70 39360 134.9.39.38 622'; export SSH_CONNECTION
-SSH_TTY=/dev/pts/217; export SSH_TTY
-SYS_TYPE=blueos_3_ppc64le_ib_p9; export SYS_TYPE
-TERM=xterm-256color; export TERM
-TMPDIR=/var/tmp; export TMPDIR
-USER=pan13; export USER
-WISECONFIGDIR=/usr/share/wise2/; export WISECONFIGDIR
-XDG_DATA_DIRS=/g/g20/pan13/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share; export XDG_DATA_DIRS
-XLSF_UIDDIR=/opt/ibm/spectrumcomputing/lsf/10.1.0.10/linux3.10-glibc2.17-ppc64le-csm/lib/uid; export XLSF_UIDDIR
-_LMFILES_=/usr/tcetmp/modulefiles/Core/xl/2022.08.19.lua:/usr/tce/modulefiles/Compiler/xl/2022.08.19/spectrum-mpi/rolling-release.lua:/usr/tcetmp/modulefiles/Core/cuda/10.1.243.lua:/usr/tcetmp/modulefiles/Core/StdEnv.lua:/usr/tcetmp/modulefiles/Core/python/3.8.2.lua:/usr/tcetmp/modulefiles/Core/cmake/3.23.1.lua; export _LMFILES_
-_ModuleTable001_=X01vZHVsZVRhYmxlXyA9IHsKTVR2ZXJzaW9uID0gMywKY19yZWJ1aWxkVGltZSA9IGZhbHNlLApjX3Nob3J0VGltZSA9IGZhbHNlLApkZXB0aFQgPSB7fSwKZmFtaWx5ID0gewpjb21waWxlciA9ICJ4bCIsCmN1ZGEgPSAiY3VkYSIsCm1waSA9ICJzcGVjdHJ1bS1tcGkiLAp9LAptVCA9IHsKU3RkRW52ID0gewpmbiA9ICIvdXNyL3RjZXRtcC9tb2R1bGVmaWxlcy9Db3JlL1N0ZEVudi5sdWEiLApmdWxsTmFtZSA9ICJTdGRFbnYiLApsb2FkT3JkZXIgPSA0LApwcm9wVCA9IHsKbG1vZCA9IHsKc3RpY2t5ID0gMSwKfSwKfSwKc3RhY2tEZXB0aCA9IDAsCnN0YXR1cyA9ICJhY3RpdmUiLAp1c2VyTmFtZSA9ICJTdGRFbnYiLAp3ViA9ICJNLip6ZmluYWwiLAp9LApjbWFrZSA9IHsK; export _ModuleTable001_
-_ModuleTable002_=Zm4gPSAiL3Vzci90Y2V0bXAvbW9kdWxlZmlsZXMvQ29yZS9jbWFrZS8zLjIzLjEubHVhIiwKZnVsbE5hbWUgPSAiY21ha2UvMy4yMy4xIiwKbG9hZE9yZGVyID0gNiwKcHJvcFQgPSB7fSwKc3RhY2tEZXB0aCA9IDAsCnN0YXR1cyA9ICJhY3RpdmUiLAp1c2VyTmFtZSA9ICJjbWFrZS8zLjIzIiwKd1YgPSAiMDAwMDAwMDAzLjAwMDAwMDAyMy4wMDAwMDAwMDEuKnpmaW5hbCIsCn0sCmN1ZGEgPSB7CmZuID0gIi91c3IvdGNldG1wL21vZHVsZWZpbGVzL0NvcmUvY3VkYS8xMC4xLjI0My5sdWEiLApmdWxsTmFtZSA9ICJjdWRhLzEwLjEuMjQzIiwKbG9hZE9yZGVyID0gMywKcHJvcFQgPSB7fSwKc3RhY2tEZXB0aCA9IDEsCnN0YXR1cyA9ICJhY3RpdmUiLAp1c2VyTmFtZSA9ICJj; export _ModuleTable002_
+aW5hbCIsCn0sCmN1ZGEgPSB7CmZuID0gIi91c3IvdGNldG1wL21vZHVsZWZpbGVzL0NvcmUvY3VkYS8xMC4xLjI0My5sdWEiLApmdWxsTmFtZSA9ICJjdWRhLzEwLjEuMjQzIiwKbG9hZE9yZGVyID0gMywKcHJvcFQgPSB7fSwKc3RhY2tEZXB0aCA9IDEsCnN0YXR1cyA9ICJhY3RpdmUiLAp1c2VyTmFtZSA9ICJj; export _ModuleTable002_
 _ModuleTable003_=dWRhLzEwLjEuMjQzIiwKd1YgPSAiXjAwMDAwMDEwLjAwMDAwMDAwMS4wMDAwMDAyNDMuKnpmaW5hbCIsCn0sCnB5dGhvbiA9IHsKZm4gPSAiL3Vzci90Y2V0bXAvbW9kdWxlZmlsZXMvQ29yZS9weXRob24vMy44LjIubHVhIiwKZnVsbE5hbWUgPSAicHl0aG9uLzMuOC4yIiwKbG9hZE9yZGVyID0gNSwKcHJvcFQgPSB7fSwKc3RhY2tEZXB0aCA9IDAsCnN0YXR1cyA9ICJhY3RpdmUiLAp1c2VyTmFtZSA9ICJweXRob24vMy44LjIiLAp3ViA9ICIwMDAwMDAwMDMuMDAwMDAwMDA4LjAwMDAwMDAwMi4qemZpbmFsIiwKfSwKWyJzcGVjdHJ1bS1tcGkiXSA9IHsKZm4gPSAiL3Vzci90Y2UvbW9kdWxlZmlsZXMvQ29tcGlsZXIveGwvMjAyMi4wOC4xOS9zcGVjdHJ1bS1tcGkvcm9sbGlu; export _ModuleTable003_
 _ModuleTable004_=Zy1yZWxlYXNlLmx1YSIsCmZ1bGxOYW1lID0gInNwZWN0cnVtLW1waS9yb2xsaW5nLXJlbGVhc2UiLApsb2FkT3JkZXIgPSAyLApwcm9wVCA9IHt9LApzdGFja0RlcHRoID0gMSwKc3RhdHVzID0gImFjdGl2ZSIsCnVzZXJOYW1lID0gInNwZWN0cnVtLW1waS9yb2xsaW5nLXJlbGVhc2UiLAp3ViA9ICJecm9sbGluZy4qcmVsZWFzZS4qemZpbmFsIiwKfSwKeGwgPSB7CmZuID0gIi91c3IvdGNldG1wL21vZHVsZWZpbGVzL0NvcmUveGwvMjAyMi4wOC4xOS5sdWEiLApmdWxsTmFtZSA9ICJ4bC8yMDIyLjA4LjE5IiwKbG9hZE9yZGVyID0gMSwKcHJvcFQgPSB7fSwKc3RhY2tEZXB0aCA9IDEsCnN0YXR1cyA9ICJhY3RpdmUiLAp1c2VyTmFtZSA9ICJ4bC8yMDIyLjA4LjE5IiwKd1Yg; export _ModuleTable004_
 _ModuleTable005_=PSAiXjAwMDAyMDIyLjAwMDAwMDAwOC4wMDAwMDAwMTkuKnpmaW5hbCIsCn0sCn0sCm1wYXRoQSA9IHsKIi91c3IvdGNlL21vZHVsZWZpbGVzL01QSS94bC8yMDIyLjA4LjE5L3NwZWN0cnVtLW1waS9yb2xsaW5nLXJlbGVhc2UiCiwgIi91c3IvdGNlL21vZHVsZWZpbGVzL0NvbXBpbGVyL3hsLzIwMjIuMDguMTkiLCAiL3Vzci90Y2V0bXAvbW9kdWxlZmlsZXMvQ29yZSIsICIvdXNyL2FwcHMvbW9kdWxlZmlsZXMiCiwgIi91c3Ivc2hhcmUvbW9kdWxlZmlsZXMvTGludXgiLCAiL3Vzci9zaGFyZS9tb2R1bGVmaWxlcy9Db3JlIiwgIi91c3Ivc2hhcmUvbG1vZC9sbW9kL21vZHVsZWZpbGVzL0NvcmUiLCAiL2NvbGxhYi91c3IvZ2xvYmFsL3Rvb2xzL21vZHVsZWZpbGVzL2JsdWVv; export _ModuleTable005_
