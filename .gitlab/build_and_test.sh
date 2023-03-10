@@ -8,7 +8,7 @@ ROCM_VERSION=5.2.3
 
 # SPEC="%${COMPILER_SPEC} cstd=99 cxxstd=14 precision=double ~int64 amdgpu_target=${AMDGPU_TARGET} ~mpi+openmp+rocm+magma+raja ^magma+rocm amdgpu_target=gfx906 ^raja+rocm~openmp~examples~exercises amdgpu_target=gfx906"
 
-SPEC="%${COMPILER_SPEC} cstd=99 cxxstd=14 precision=double ~int64 amdgpu_target=${AMDGPU_TARGET} ~mpi+openmp+rocm+raja+magma+ginkgo ^ginkgo+rocm amdgpu_target=${AMDGPU_TARGET} ^raja+rocm~openmp~examples~exercises amdgpu_target=${AMDGPU_TARGET} ^magma+rocm amdgpu_target=${AMDGPU_TARGET} ^hipblas@${ROCM_VERSION} ^hip@${ROCM_VERSION} ^hipsparse@${ROCM_VERSION} ^hsa-rocr-dev@${ROCM_VERSION} ^rocrand@${ROCM_VERSION} ^rocthrust@${ROCM_VERSION} ^llvm-amdgpu@${ROCM_VERSION}"
+SPEC="%${COMPILER_SPEC} cstd=99 cxxstd=14 precision=double ~int64 amdgpu_target=${AMDGPU_TARGET} ~mpi+openmp+rocm+raja+magma+ginkgo+kokkos+kokkos-kernels ^kokkos-kernels+rocm amdgpu_target=${AMDGPU_TARGET} ^kokkos+rocm amdgpu_target=${AMDGPU_TARGET} ^ginkgo+rocm amdgpu_target=${AMDGPU_TARGET} ^raja+rocm~openmp~examples~exercises amdgpu_target=${AMDGPU_TARGET} ^magma+rocm amdgpu_target=${AMDGPU_TARGET} ^hipblas@${ROCM_VERSION} ^hip@${ROCM_VERSION} ^hipsparse@${ROCM_VERSION} ^hsa-rocr-dev@${ROCM_VERSION} ^rocrand@${ROCM_VERSION} ^rocthrust@${ROCM_VERSION} ^llvm-amdgpu@${ROCM_VERSION}"
 
 # Add Ginkgo, Kokkos, Kokkos-kernels next
 
@@ -130,10 +130,10 @@ then
 
     if [[ "${shared_spack}" == "UPSTREAM" ]] # uses the upstream to save on build time
     then
-        python3 .gitlab/uberenv/uberenv.py --spec="${spec}" "${prefix_opt}" "${upstream_opt}" --reuse=True
+        python3 .gitlab/uberenv/uberenv.py --spec="${spec}" "${prefix_opt}" "${upstream_opt}" --reuse=True 
     elif [[ "${shared_spack}" == "ON" ]] # seems to install in the upstream
     then
-        python3 .gitlab/uberenv/uberenv.py --spec="${spec}" --prefix="${upstream}"
+        python3 .gitlab/uberenv/uberenv.py --spec="${spec}" --prefix="${upstream}" --spack-debug
     else
         python3 .gitlab/uberenv/uberenv.py --spec="${spec}" "${prefix_opt}"
     fi

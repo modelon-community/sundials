@@ -133,13 +133,6 @@ class Sundials(CachedCMakePackage, CudaPackage, ROCmPackage):
         description="Enable KokkosKernels based matrix and linear solver",
     )
     variant("hypre", default=False, when="@2.7.0:", description="Enable Hypre MPI parallel vector")
-    variant("kokkos", default=False, when="@6.4.0:", description="Enable Kokkos vector")
-    variant(
-        "kokkos-kernels",
-        default=False,
-        when="@6.4.0:",
-        description="Enable KokkosKernels based matrix and linear solver",
-    )
     variant("klu", default=False, description="Enable KLU sparse, direct solver")
     variant("lapack", default=False, description="Enable LAPACK direct solvers")
     variant("petsc", default=False, when="@2.7.0:", description="Enable PETSc interfaces")
