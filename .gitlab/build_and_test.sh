@@ -1,14 +1,14 @@
 #!/usr/bin/bash
 
 # Debug spec and variables
-# COMPILER_SPEC=rocmcc@5.2.3
-COMPILER_SPEC=clang@14.0.0
+COMPILER_SPEC=rocmcc@5.2.3
+# COMPILER_SPEC=clang@14.0.0
 AMDGPU_TARGET=gfx906
 ROCM_VERSION=5.2.3
 
 # SPEC="%${COMPILER_SPEC} cstd=99 cxxstd=14 precision=double ~int64 amdgpu_target=${AMDGPU_TARGET} ~mpi+openmp+rocm+magma+raja ^magma+rocm amdgpu_target=gfx906 ^raja+rocm~openmp~examples~exercises amdgpu_target=gfx906"
 
-SPEC="%${COMPILER_SPEC} cstd=99 cxxstd=14 precision=double ~int64 amdgpu_target=${AMDGPU_TARGET} ~mpi+openmp+rocm+raja+magma+ginkgo+kokkos+kokkos-kernels ^kokkos-kernels+rocm amdgpu_target=${AMDGPU_TARGET} ^kokkos+rocm amdgpu_target=${AMDGPU_TARGET} ^ginkgo+rocm amdgpu_target=${AMDGPU_TARGET} ^raja+rocm~openmp~examples~exercises amdgpu_target=${AMDGPU_TARGET} ^magma+rocm amdgpu_target=${AMDGPU_TARGET} ^hipblas@${ROCM_VERSION} ^hip@${ROCM_VERSION} ^hipsparse@${ROCM_VERSION} ^hsa-rocr-dev@${ROCM_VERSION} ^rocrand@${ROCM_VERSION} ^rocthrust@${ROCM_VERSION} ^llvm-amdgpu@${ROCM_VERSION}"
+SPEC="%${COMPILER_SPEC} cstd=99 cxxstd=14 precision=double ~int64 amdgpu_target=${AMDGPU_TARGET} ~mpi+openmp+rocm+kokkos+kokkos-kernels ^kokkos+rocm~profiling amdgpu_target=${AMDGPU_TARGET} ^kokkos-kernels"
 
 # Add Ginkgo, Kokkos, Kokkos-kernels next
 
@@ -16,7 +16,7 @@ SPEC="%${COMPILER_SPEC} cstd=99 cxxstd=14 precision=double ~int64 amdgpu_target=
 # COMPILER_SPEC=gcc@8.3.1
 # CUDA_SPEC=cuda@11.5.0
 
-# SPEC="%${COMPILER_SPEC} cstd=99 cxxstd=14 precision=double +mpi+openmp+cuda cuda_arch=70"
+# SPEC="%${COMPILER_SPEC} cstd=99 cxxstd=14 precision=double +mpi+openmp+cuda+kokkos cuda_arch=70 ^kokkos+wrapper+cuda cuda_arch=70"
 
 # make sure lmod is loaded
 if test -e /usr/share/lmod/lmod/init/bash
@@ -133,7 +133,7 @@ then
         python3 .gitlab/uberenv/uberenv.py --spec="${spec}" "${prefix_opt}" "${upstream_opt}" --reuse=True 
     elif [[ "${shared_spack}" == "ON" ]] # seems to install in the upstream
     then
-        python3 .gitlab/uberenv/uberenv.py --spec="${spec}" --prefix="${upstream}" --spack-debug
+        python3 .gitlab/uberenv/uberenv.py --spec="${spec}" --prefix="${upstream}"
     else
         python3 .gitlab/uberenv/uberenv.py --spec="${spec}" "${prefix_opt}"
     fi
