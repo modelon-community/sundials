@@ -16,15 +16,15 @@ set(CMAKE_CXX_STANDARD "14" CACHE STRING "")
 
 set(ENABLE_HIP ON CACHE BOOL "")
 
-set(CMAKE_C_COMPILER "/opt/rocm-5.4.1/llvm/bin/clang" CACHE PATH "")
+set(CMAKE_C_COMPILER "/opt/rocm-5.2.3/llvm/bin/clang" CACHE PATH "")
 
-set(CMAKE_CXX_COMPILER "/opt/rocm-5.4.1/hip/bin/hipcc" CACHE PATH "")
+set(CMAKE_CXX_COMPILER "/opt/rocm-5.2.3/hip/bin/hipcc" CACHE PATH "")
 
-set(HIP_PATH "/opt/rocm-5.4.1/hip" CACHE PATH "")
+set(HIP_PATH "/opt/rocm-5.2.3/hip" CACHE PATH "")
 
-set(HIP_CLANG_INCLUDE_PATH "/opt/rocm-5.4.1/llvm/include" CACHE PATH "")
+set(HIP_CLANG_INCLUDE_PATH "/opt/rocm-5.2.3/llvm/include" CACHE PATH "")
 
-set(ROCM_PATH "/opt/rocm-5.4.1/llvm" CACHE PATH "")
+set(ROCM_PATH "/opt/rocm-5.2.3/llvm" CACHE PATH "")
 
 set(AMDGPU_TARGETS "gfx906" CACHE STRING "")
 
@@ -94,9 +94,15 @@ set(ENABLE_KOKKOS ON CACHE BOOL "")
 
 set(ENABLE_KOKKOS_KERNELS ON CACHE BOOL "")
 
-set(Kokkos_DIR "/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/rocmcc-5.2.3/kokkos-3.7.00-qwvitxbvizt5oxxvskgrxdagp3av2iaj" CACHE PATH "")
+set(ENABLE_GINKGO ON CACHE BOOL "")
 
-set(KokkosKernels_DIR "/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/rocmcc-5.2.3/kokkos-kernels-3.7.00-wssvn42dws3lxrkif33r4ueavjn6awt3" CACHE PATH "")
+set(Ginkgo_DIR "/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-14.0.0/ginkgo-1.5.0.glu_experimental-662mmd646tpy3nznxe4ihy4p6lwo7uem" CACHE PATH "")
+
+set(SUNDIALS_GINKGO_BACKENDS "REF;OMP;HIP" CACHE STRING "")
+
+set(Kokkos_DIR "/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-14.0.0/kokkos-3.7.00-mcgxya2ybbtbtcsz446i2txcmcd7bhcl" CACHE PATH "")
+
+set(KokkosKernels_DIR "/usr/WS2/pan13/sundials/spack_installs/v0.19.1/corona/clang-14.0.0/kokkos-kernels-3.7.00-nqbyiqdcnmaywswfnlmsicvz7p5un7sd" CACHE PATH "")
 
 set(EXAMPLES_ENABLE_C ON CACHE BOOL "")
 

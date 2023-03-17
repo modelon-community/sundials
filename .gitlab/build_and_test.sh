@@ -1,14 +1,14 @@
 #!/usr/bin/bash
 
 # Debug spec and variables
-COMPILER_SPEC=rocmcc@5.2.3
-# COMPILER_SPEC=clang@14.0.0
+# COMPILER_SPEC=rocmcc@5.2.3
+COMPILER_SPEC=clang@14.0.0
 AMDGPU_TARGET=gfx906
 ROCM_VERSION=5.2.3
 
 # SPEC="%${COMPILER_SPEC} cstd=99 cxxstd=14 precision=double ~int64 amdgpu_target=${AMDGPU_TARGET} ~mpi+openmp+rocm+magma+raja ^magma+rocm amdgpu_target=gfx906 ^raja+rocm~openmp~examples~exercises amdgpu_target=gfx906"
 
-SPEC="%${COMPILER_SPEC} cstd=99 cxxstd=14 precision=double ~int64 amdgpu_target=${AMDGPU_TARGET} ~mpi+openmp+rocm+kokkos+kokkos-kernels ^kokkos+rocm~profiling amdgpu_target=${AMDGPU_TARGET} ^kokkos-kernels"
+SPEC="%${COMPILER_SPEC} cstd=99 cxxstd=14 precision=double ~int64 amdgpu_target=${AMDGPU_TARGET} ~mpi+openmp+rocm+kokkos+kokkos-kernels+ginkgo ^ginkgo+rocm amdgpu_target=${AMDGPU_TARGET} ^kokkos+rocm~profiling amdgpu_target=${AMDGPU_TARGET} ^kokkos-kernels ^hipblas@${ROCM_VERSION} ^hipsparse@${ROCM_VERSION} ^rocrand@${ROCM_VERSION} ^rocthrust@${ROCM_VERSION} ^hip@${ROCM_VERSION} ^hsa-rocr-dev@${ROCM_VERSION} ^llvm-amdgpu@${ROCM_VERSION}"
 
 # Add Ginkgo, Kokkos, Kokkos-kernels next
 
