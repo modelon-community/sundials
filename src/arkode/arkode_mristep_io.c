@@ -3,7 +3,7 @@
  *                Daniel R. Reynolds @ SMU
  * -----------------------------------------------------------------------------
  * SUNDIALS Copyright Start
- * Copyright (c) 2002-2022, Lawrence Livermore National Security
+ * Copyright (c) 2002-2023, Lawrence Livermore National Security
  * and Southern Methodist University.
  * All rights reserved.
  *
@@ -120,6 +120,12 @@ char *MRIStepGetReturnFlagName(long int flag) {
   These wrappers for ARKLs module 'get' routines all are
   documented in arkode_mristep.h.
   ---------------------------------------------------------------*/
+int MRIStepGetJac(void *arkode_mem, SUNMatrix *J) {
+  return arkLSGetJac(arkode_mem, J); }
+int MRIStepGetJacTime(void *arkode_mem, sunrealtype *t_J) {
+  return arkLSGetJacTime(arkode_mem, t_J); }
+int MRIStepGetJacNumSteps(void *arkode_mem, long *nst_J) {
+  return arkLSGetJacNumSteps(arkode_mem, nst_J); }
 int MRIStepGetLinWorkSpace(void *arkode_mem, long int *lenrwLS, long int *leniwLS) {
   return(arkLSGetWorkSpace(arkode_mem, lenrwLS, leniwLS)); }
 int MRIStepGetNumJacEvals(void *arkode_mem, long int *njevals) {
@@ -951,7 +957,7 @@ int MRIStepPrintAllStats(void *arkode_mem, FILE *outfile, SUNOutputFormat fmt)
   ARKLsMem arkls_mem;
   int retval;
 
-  /* access ARKodeARKStepMem structure */
+  /* access ARKode MRIStepMem structure */
   retval = mriStep_AccessStepMem(arkode_mem, "MRIStepPrintAllStats",
                                  &ark_mem, &step_mem);
   if (retval != ARK_SUCCESS) return(retval);
