@@ -90,3 +90,6 @@
  * Windows), the SUNDIALS_EXPORT macro is empty
  */
 @SUNDIALS_EXPORT@
+
+/* If CVode supports relative tolerance vectors */
+#cmakedefine SUNDIALS_CVODE_RTOL_VEC

@@ -4188,7 +4188,7 @@ static int cvEwtSetSV(CVodeMem cv_mem, N_Vector ycur, N_Vector weight)
 static int cvEwtSetVV(CVodeMem cv_mem, N_Vector ycur, N_Vector weight)
 {
   N_VAbs(ycur, tempv);
-  N_Vprod(Vreltol, tempv, tempv);
+  N_VProd(Vreltol, tempv, tempv);
   N_VLinearSum(ONE, tempv, ONE, Vabstol, tempv);
   if (N_VMin(tempv) <= ZERO) return(-1);
   N_VInv(tempv, weight);
