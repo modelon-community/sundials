@@ -1173,7 +1173,7 @@ int CVodeVVtolerances(void *cvode_mem, N_Vector reltol, N_Vector abstol)
   /* Copy tolerances into memory */
 
   if ( !(cv_mem->cv_VreltolMallocDone) ) {
-    cv_mem->cv_Vabstol = N_VClone(cv_mem->cv_ewt);
+    cv_mem->cv_Vreltol = N_VClone(cv_mem->cv_ewt);
     lrw += lrw1;
     liw += liw1;
     cv_mem->cv_VreltolMallocDone = TRUE;
