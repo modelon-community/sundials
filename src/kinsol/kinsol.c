@@ -145,7 +145,7 @@
  * MAX_RECVR   max. no. of attempts to correct a recoverable func error
  */
 
-#define MAX_RECVR      5
+#define MAX_RECVR      20
 
 /*
  * Keys for KINPrintInfo
@@ -1647,8 +1647,7 @@ static int KINLineSearch(KINMem kin_mem, realtype *fnormp, realtype *f1normp,
           rldiff = rldiff - rlinc;
         }
 
-      } while ((*f1normp > alpha_cond) ||
-	       ((*f1normp < beta_cond) && (rldiff >= rlmin)));
+      } while (((*f1normp > alpha_cond) || (*f1normp < beta_cond)) && (rldiff >= rlmin));
 
       if ( (*f1normp < beta_cond) || ((rldiff < rlmin) && (*f1normp > alpha_cond)) ) {
 
