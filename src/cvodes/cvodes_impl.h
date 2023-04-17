@@ -93,7 +93,8 @@ typedef struct CVodeMemRec {
   int cv_iter;                /* iter = FUNCTIONAL or NEWTON                  */
 
   int cv_itol;                /* itol = CV_SS, CV_SV, or CV_WF, or CV_NN      */
-  realtype cv_reltol;         /* relative tolerance                           */
+  realtype cv_Sreltol;        /* scalar relative tolerance                    */
+  N_Vector cv_Vreltol;        /* vector relative tolerance                    */
   realtype cv_Sabstol;        /* scalar absolute tolerance                    */
   N_Vector cv_Vabstol;        /* vector absolute tolerance                    */
   booleantype cv_user_efun;   /* TRUE if user sets efun                       */
@@ -388,6 +389,7 @@ typedef struct CVodeMemRec {
     and read by CVodeReInit, CVodeSensReInit, and CVodeQuadReInit
     --------------------------------------------------------------------*/
 
+  booleantype cv_VreltolMallocDone;
   booleantype cv_VabstolMallocDone;
   booleantype cv_MallocDone;
 

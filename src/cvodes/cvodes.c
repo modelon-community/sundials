@@ -2514,7 +2514,8 @@ int CVodeRootInit(void *cvode_mem, int nrtfn, CVRootFn g)
 #define maxcor         (cv_mem->cv_maxcor)
 #define nlscoef        (cv_mem->cv_nlscoef)
 #define itol           (cv_mem->cv_itol)         
-#define Sreltol        (cv_mem->cv_Sreltol)       
+#define Sreltol        (cv_mem->cv_Sreltol)
+#define Vreltol        (cv_mem->cv_Vreltol)       
 #define Sabstol        (cv_mem->cv_Sabstol) 
 #define Vabstol        (cv_mem->cv_Vabstol) 
 
@@ -4904,7 +4905,7 @@ static int cvEwtSetSV(CVodeMem cv_mem, N_Vector ycur, N_Vector weight)
 static int cvEwtSetVV(CVodeMem cv_mem, N_Vector ycur, N_Vector weight)
 {
   N_VAbs(ycur, tempv);
-  N_Vprod(Vreltol, tempv, tempv)
+  N_Vprod(Vreltol, tempv, tempv);
   N_VLinearSum(ONE, tempv, ONE, Vabstol, tempv);
   if (N_VMin(tempv) <= ZERO) return(-1);
   N_VInv(tempv, weight);
@@ -8750,7 +8751,11 @@ int cvSensRhs1InternalDQ(int Ns, realtype t,
   /* cvode_mem is passed here as user data */
   cv_mem = (CVodeMem) cvode_mem;
 
-  delta = SUNRsqrt(SUNMAX(reltol, uround));
+  if (itolQS == CV_VV){
+    delta = SUNRsqrt(SUNMAX(N_VMaxNorm(Vreltol), uround));
+  }else{ /* CV_SS, CV_SV */
+    delta = SUNRsqrt(SUNMAX(Sreltol, uround));
+  }
   rdelta = ONE/delta;
   
   pbari = pbar[is];
@@ -8930,7 +8935,11 @@ static int cvQuadSensRhs1InternalDQ(CVodeMem cv_mem, int is, realtype t,
   realtype Delta , rDelta , r2Delta ;
   realtype norms;
 
-  delta = SUNRsqrt(SUNMAX(reltol, uround));
+  if (itolQS == CV_VV){
+    delta = SUNRsqrt(SUNMAX(N_VMaxNorm(Vreltol), uround));
+  }else{ /* CV_SS, CV_SV */
+    delta = SUNRsqrt(SUNMAX(Sreltol, uround));
+  }
   rdelta = ONE/delta;
   
   pbari = pbar[is];
