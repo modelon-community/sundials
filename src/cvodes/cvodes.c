@@ -8751,7 +8751,7 @@ int cvSensRhs1InternalDQ(int Ns, realtype t,
   /* cvode_mem is passed here as user data */
   cv_mem = (CVodeMem) cvode_mem;
 
-  if (itolQS == CV_VV){
+  if (itol == CV_VV){
     delta = SUNRsqrt(SUNMAX(N_VMaxNorm(Vreltol), uround));
   }else{ /* CV_SS, CV_SV */
     delta = SUNRsqrt(SUNMAX(Sreltol, uround));
@@ -8935,7 +8935,7 @@ static int cvQuadSensRhs1InternalDQ(CVodeMem cv_mem, int is, realtype t,
   realtype Delta , rDelta , r2Delta ;
   realtype norms;
 
-  if (itolQS == CV_VV){
+  if (itol == CV_VV){
     delta = SUNRsqrt(SUNMAX(N_VMaxNorm(Vreltol), uround));
   }else{ /* CV_SS, CV_SV */
     delta = SUNRsqrt(SUNMAX(Sreltol, uround));

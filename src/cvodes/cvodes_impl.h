@@ -149,7 +149,7 @@ typedef struct CVodeMemRec {
     Quadrature Sensitivity Related Data 
     -----------------------------------*/
 
-  booleantype cv_quadr_sensi; /* TRUE if computing sensitivties of quadrs.    */
+  booleantype cv_quadr_sensi; /* TRUE if computing sensitivities of quadrs.    */
 
   CVQuadSensRhsFn cv_fQS;     /* fQS = (dfQ/dy)*yS + (dfQ/dp)                 */
   void *cv_fQS_data;          /* data pointer passed to fQS                   */
