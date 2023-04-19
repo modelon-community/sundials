@@ -146,7 +146,8 @@
 #define CV_NN  0
 #define CV_SS  1
 #define CV_SV  2
-#define CV_WF  3
+#define CV_VV  3
+#define CV_WF  4
 
 /*
  * Algorithmic constants
@@ -252,6 +253,7 @@ static void cvFreeVectors(CVodeMem cv_mem);
 
 static int cvEwtSetSS(CVodeMem cv_mem, N_Vector ycur, N_Vector weight);
 static int cvEwtSetSV(CVodeMem cv_mem, N_Vector ycur, N_Vector weight);
+static int cvEwtSetVV(CVodeMem cv_mem, N_Vector ycur, N_Vector weight);
 
 static int cvHin(CVodeMem cv_mem, realtype tout);
 static realtype cvUpperBoundH0(CVodeMem cv_mem, realtype tdist);
@@ -409,6 +411,7 @@ void *CVodeCreate(int lmm, int iter)
 
   /* No mallocs have been done yet */
 
+  cv_mem->cv_VreltolMallocDone = FALSE;
   cv_mem->cv_VabstolMallocDone = FALSE;
   cv_mem->cv_MallocDone        = FALSE;
 
@@ -661,6 +664,7 @@ int CVodeReInit(void *cvode_mem, realtype t0, N_Vector y0)
 /*
  * CVodeSStolerances
  * CVodeSVtolerances
+ * CVodeVVtolerances
  * CVodeWFtolerances
  *
  * These functions specify the integration tolerances. One of them
@@ -670,6 +674,9 @@ int CVodeReInit(void *cvode_mem, realtype t0, N_Vector y0)
  * CVodeSVtolerances specifies scalar relative tolerance and a vector
  *   absolute tolerance (a potentially different absolute tolerance 
  *   for each vector component).
+ * CVodeVVtolerances specifies a vector relative tolerance and a vector
+ *   absolute tolerance (a potentially different relative and absolute 
+ *   tolerance for each vector component).
  * CVodeWFtolerances specifies a user-provides function (of type CVEwtFn)
  *   which will be called to set the error weight vector.
  */
@@ -703,7 +710,7 @@ int CVodeSStolerances(void *cvode_mem, realtype reltol, realtype abstol)
 
   /* Copy tolerances into memory */
   
-  cv_mem->cv_reltol = reltol;
+  cv_mem->cv_Sreltol = reltol;
   cv_mem->cv_Sabstol = abstol;
 
   cv_mem->cv_itol = CV_SS;
@@ -752,10 +759,67 @@ int CVodeSVtolerances(void *cvode_mem, realtype reltol, N_Vector abstol)
     cv_mem->cv_VabstolMallocDone = TRUE;
   }
 
-  cv_mem->cv_reltol = reltol;
+  cv_mem->cv_Sreltol = reltol;
   N_VScale(ONE, abstol, cv_mem->cv_Vabstol);
 
   cv_mem->cv_itol = CV_SV;
+
+  cv_mem->cv_user_efun = FALSE;
+  cv_mem->cv_efun = cvEwtSet;
+  cv_mem->cv_e_data = NULL; /* will be set to cvode_mem in InitialSetup */
+
+  return(CV_SUCCESS);
+}
+
+
+int CVodeVVtolerances(void *cvode_mem, N_Vector reltol, N_Vector abstol)
+{
+  CVodeMem cv_mem;
+
+  if (cvode_mem==NULL) {
+    cvProcessError(NULL, CV_MEM_NULL, "CVODE", "CVodeVVtolerances", MSGCV_NO_MEM);
+    return(CV_MEM_NULL);
+  }
+  cv_mem = (CVodeMem) cvode_mem;
+
+  if (cv_mem->cv_MallocDone == FALSE) {
+    cvProcessError(cv_mem, CV_NO_MALLOC, "CVODE", "CVodeVVtolerances", MSGCV_NO_MALLOC);
+    return(CV_NO_MALLOC);
+  }
+
+  /* Check inputs */
+
+  if (N_VMin(reltol) < ZERO) {
+    cvProcessError(cv_mem, CV_ILL_INPUT, "CVODE", "CVodeVVtolerances", MSGCV_BAD_RELTOL);
+    return(CV_ILL_INPUT);
+  }
+
+  if (N_VMin(abstol) < ZERO) {
+    cvProcessError(cv_mem, CV_ILL_INPUT, "CVODE", "CVodeVVtolerances", MSGCV_BAD_ABSTOL);
+    return(CV_ILL_INPUT);
+  }
+
+  /* Copy tolerances into memory */
+
+  if ( !(cv_mem->cv_VreltolMallocDone) ) {
+    cv_mem->cv_Vreltol = N_VClone(cv_mem->cv_ewt);
+    lrw += lrw1;
+    liw += liw1;
+    cv_mem->cv_VreltolMallocDone = TRUE;
+  }
+
+  N_VScale(ONE, reltol, cv_mem->cv_Vreltol);
+  
+  if ( !(cv_mem->cv_VabstolMallocDone) ) {
+    cv_mem->cv_Vabstol = N_VClone(cv_mem->cv_ewt);
+    lrw += lrw1;
+    liw += liw1;
+    cv_mem->cv_VabstolMallocDone = TRUE;
+  }
+
+  N_VScale(ONE, abstol, cv_mem->cv_Vabstol);
+
+  cv_mem->cv_itol = CV_VV;
 
   cv_mem->cv_user_efun = FALSE;
   cv_mem->cv_efun = cvEwtSet;
@@ -979,7 +1043,8 @@ int CVodeRootInit(void *cvode_mem, int nrtfn, CVRootFn g)
 #define maxcor         (cv_mem->cv_maxcor)
 #define nlscoef        (cv_mem->cv_nlscoef)
 #define itol           (cv_mem->cv_itol)         
-#define reltol         (cv_mem->cv_reltol)       
+#define Sreltol        (cv_mem->cv_Sreltol)
+#define Vreltol        (cv_mem->cv_Vreltol)
 #define Sabstol        (cv_mem->cv_Sabstol)
 #define Vabstol        (cv_mem->cv_Vabstol)
 
@@ -4040,12 +4105,14 @@ static int cvRootfind(CVodeMem cv_mem)
  *     if tol_type = CV_SS
  * (2) ewt[i] = 1 / (reltol * SUNRabs(ycur[i]) + abstol[i]), i=0,...,neq-1
  *     if tol_type = CV_SV
+ * (3) ewt[i] = 1 / (reltol[i] * SUNRabs(ycur[i]) + abstol[i]), i=0,...,neq-1
+ *     if tol_type = CV_VV
  *
  * cvEwtSet returns 0 if ewt is successfully set as above to a
  * positive vector and -1 otherwise. In the latter case, ewt is
  * considered undefined.
  *
- * All the real work is done in the routines cvEwtSetSS, cvEwtSetSV.
+ * All the real work is done in the routines cvEwtSetSS, cvEwtSetSV, cvEwtSetVV.
  */
 
 int cvEwtSet(N_Vector ycur, N_Vector weight, void *data)
@@ -4064,6 +4131,9 @@ int cvEwtSet(N_Vector ycur, N_Vector weight, void *data)
   case CV_SV: 
     flag = cvEwtSetSV(cv_mem, ycur, weight);
     break;
+  case CV_VV: 
+    flag = cvEwtSetVV(cv_mem, ycur, weight);
+    break;
   }
   
   return(flag);
@@ -4081,7 +4151,7 @@ int cvEwtSet(N_Vector ycur, N_Vector weight, void *data)
 static int cvEwtSetSS(CVodeMem cv_mem, N_Vector ycur, N_Vector weight)
 {
   N_VAbs(ycur, tempv);
-  N_VScale(reltol, tempv, tempv);
+  N_VScale(Sreltol, tempv, tempv);
   N_VAddConst(tempv, Sabstol, tempv);
   if (N_VMin(tempv) <= ZERO) return(-1);
   N_VInv(tempv, weight);
@@ -4100,7 +4170,26 @@ static int cvEwtSetSS(CVodeMem cv_mem, N_Vector ycur, N_Vector weight)
 static int cvEwtSetSV(CVodeMem cv_mem, N_Vector ycur, N_Vector weight)
 {
   N_VAbs(ycur, tempv);
-  N_VLinearSum(reltol, tempv, ONE, Vabstol, tempv);
+  N_VLinearSum(Sreltol, tempv, ONE, Vabstol, tempv);
+  if (N_VMin(tempv) <= ZERO) return(-1);
+  N_VInv(tempv, weight);
+  return(0);
+}
+
+/*
+ * cvEwtSetVV
+ *
+ * This routine sets ewt as decribed above in the case tol_type = CV_VV.
+ * It tests for non-positive components before inverting. cvEwtSetVV
+ * returns 0 if ewt is successfully set to a positive vector
+ * and -1 otherwise. In the latter case, ewt is considered undefined.
+ */
+
+static int cvEwtSetVV(CVodeMem cv_mem, N_Vector ycur, N_Vector weight)
+{
+  N_VAbs(ycur, tempv);
+  N_VProd(Vreltol, tempv, tempv);
+  N_VLinearSum(ONE, tempv, ONE, Vabstol, tempv);
   if (N_VMin(tempv) <= ZERO) return(-1);
   N_VInv(tempv, weight);
   return(0);

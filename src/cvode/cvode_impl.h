@@ -72,7 +72,8 @@ typedef struct CVodeMemRec {
   int cv_iter;               /* iter = CV_FUNCTIONAL or CV_NEWTON             */
   int cv_itol;               /* itol = CV_SS, CV_SV, CV_WF, CV_NN             */
 
-  realtype cv_reltol;        /* relative tolerance                            */
+  realtype cv_Sreltol;       /* scalar relative tolerance                     */
+  N_Vector cv_Vreltol;       /* vector relative tolerance                     */
   realtype cv_Sabstol;       /* scalar absolute tolerance                     */
   N_Vector cv_Vabstol;       /* vector absolute tolerance                     */
   booleantype cv_user_efun;  /* TRUE if user sets efun                        */
@@ -174,7 +175,7 @@ typedef struct CVodeMemRec {
   long int cv_nni;         /* number of Newton iterations performed           */
   long int cv_nsetups;     /* number of setup calls                           */
   int cv_nhnil;            /* number of messages issued to the user that 
-                              t + h == t for the next iternal step            */
+                              t + h == t for the next internal step           */
 
   realtype cv_etaqm1;      /* ratio of new to old h for order q-1             */
   realtype cv_etaq;        /* ratio of new to old h for order q               */
@@ -225,6 +226,7 @@ typedef struct CVodeMemRec {
   int cv_indx_acor;            /* index of the zn vector with saved acor      */
   booleantype cv_setupNonNull; /* does setup do anything?                     */
 
+  booleantype cv_VreltolMallocDone;
   booleantype cv_VabstolMallocDone;
   booleantype cv_MallocDone;  
 

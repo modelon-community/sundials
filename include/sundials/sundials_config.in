@@ -73,6 +73,9 @@
  */
 #cmakedefine SUNDIALS_KLU
 
+/* CVode supports relative tolerance vectors */
+#define SUNDIALS_CVODE_RTOL_VEC
+
 /* FNVECTOR: Allow user to specify different MPI communicator
  * If it was found that the MPI implementation supports MPI_Comm_f2c, then
  *      #define SUNDIALS_MPI_COMM_F2C 1

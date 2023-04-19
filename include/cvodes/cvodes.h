@@ -592,6 +592,7 @@ SUNDIALS_EXPORT int CVodeReInit(void *cvode_mem, realtype t0, N_Vector y0);
  * -----------------------------------------------------------------
  * Functions : CVodeSStolerances
  *             CVodeSVtolerances
+ *             CVodeVVtolerances
  *             CVodeWFtolerances
  * -----------------------------------------------------------------
  *
@@ -602,13 +603,17 @@ SUNDIALS_EXPORT int CVodeReInit(void *cvode_mem, realtype t0, N_Vector y0);
  * CVodeSVtolerances specifies scalar relative tolerance and a vector
  *   absolute tolerance (a potentially different absolute tolerance 
  *   for each vector component).
+ * CVodeVVtolerances specifies a vector relative tolerance and a vector
+ *   absolute tolerance (a potentially different relative and absolute 
+ *   tolerance for each vector component).
  * CVodeWFtolerances specifies a user-provides function (of type CVEwtFn)
  *   which will be called to set the error weight vector.
  *
  * The tolerances reltol and abstol define a vector of error weights,
  * ewt, with components
- *   ewt[i] = 1/(reltol*abs(y[i]) + abstol)      (in the SS case), or
- *   ewt[i] = 1/(reltol*abs(y[i]) + abstol[i])   (in the SV case).
+ *   ewt[i] = 1/(reltol*abs(y[i]) + abstol)        (in the SS case), or
+ *   ewt[i] = 1/(reltol*abs(y[i]) + abstol[i])     (in the SV case), or
+ *   ewt[i] = 1/(reltol[i]*abs(y[i]) + abstol[i])  (in the VV case).
  * This vector is used in all error and convergence tests, which
  * use a weighted RMS norm on all error-like vectors v:
  *    WRMSnorm(v) = sqrt( (1/N) sum(i=1..N) (v[i]*ewt[i])^2 ),
@@ -629,6 +634,7 @@ SUNDIALS_EXPORT int CVodeReInit(void *cvode_mem, realtype t0, N_Vector y0);
 
 SUNDIALS_EXPORT int CVodeSStolerances(void *cvode_mem, realtype reltol, realtype abstol);
 SUNDIALS_EXPORT int CVodeSVtolerances(void *cvode_mem, realtype reltol, N_Vector abstol);
+SUNDIALS_EXPORT int CVodeVVtolerances(void *cvode_mem, N_Vector reltol, N_Vector abstol);
 SUNDIALS_EXPORT int CVodeWFtolerances(void *cvode_mem, CVEwtFn efun);
 
 /*
