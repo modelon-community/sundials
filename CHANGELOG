@@ -1,0 +1,6 @@
+* Added option to use relative tolerance vector in CVode.
+  Added SUNDIALS_CVODE_RTOL_VEC define to be able to query this functionality.
+  Not fully supported for CVodes.
+* Increased Kinsol MAX_RECVR from 5 to 20.
+* Added extra fallback in CVode Jacobian computation: Try backward differences if forward differences failed.
+* Added __OPENMP flag for SuperLU_mt with MSVC.
