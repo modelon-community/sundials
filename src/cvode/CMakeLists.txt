@@ -81,6 +81,7 @@ SET(cvode_HEADERS
   cvode_dense.h
   cvode_diag.h
   cvode_direct.h
+  cvode_direct_impl.h
   cvode.h
   cvode_sparse.h
   cvode_spbcgs.h
