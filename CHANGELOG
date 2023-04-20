@@ -4,3 +4,4 @@
 * Increased Kinsol MAX_RECVR from 5 to 20.
 * Added extra fallback in CVode Jacobian computation: Try backward differences if forward differences failed.
 * Added __OPENMP flag for SuperLU_mt with MSVC.
+* Copied cvode_direct_impl.h file to src/cvode/ and added it into CMakeLists.
