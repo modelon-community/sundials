@@ -23,7 +23,7 @@
 
 # Require a fairly recent cmake version
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.1)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.15)
 
 # Set CMake policy to allow examples to build
 if(COMMAND cmake_policy)
@@ -33,6 +33,9 @@ endif(COMMAND cmake_policy)
 # Project SUNDIALS (initially only C supported)
 
 PROJECT(sundials C)
+if (CMAKE_CROSSCOMPILING)
+  set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded")
+endif()
 
 # Set some variables with info on the SUNDIALS project
 
