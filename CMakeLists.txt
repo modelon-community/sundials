@@ -33,7 +33,7 @@ endif(COMMAND cmake_policy)
 # Project SUNDIALS (initially only C supported)
 
 PROJECT(sundials C)
-if (CMAKE_CROSSCOMPILING)
+if (MSVC OR CMAKE_CROSSCOMPILING)
   set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded")
 endif()
 
